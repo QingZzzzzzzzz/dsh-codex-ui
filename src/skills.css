@@ -40,7 +40,6 @@
 .dsc-skill-card:hover { background: #222; }
 .dsc-skill-card:focus-visible { outline: 2px solid #ffffff2e; outline-offset: -2px; }
 .dsc-skill-card-icon { display: inline-flex; flex: none; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 10px; background: #141414; }
-.dsc-skill-cube { display: block; }
 .dsc-skill-card-copy { display: flex; flex-direction: column; min-width: 0; flex: 1; gap: 2px; }
 .dsc-skill-card-title { font-size: 14px; line-height: 20px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dsc-skill-card-desc { font-size: 14px; line-height: 20px; color: #989898; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

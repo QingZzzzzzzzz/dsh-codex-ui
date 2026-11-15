@@ -1,34 +1,32 @@
 const React = require('react');
 const { createPortal } = require('react-dom');
-const { Button, IconRefreshOutlineRegular } = require('@deepseek-ai/dsh-client-ui-primitives');
+const {
+  Button, IconRefreshOutlineRegular,
+  IconFolderCloseRegular, IconFolderOpenRegular, IconNewChatOutlineRegular, IconEditOutlineRegular,
+  IconSearchOutlineRegular, IconPlusOutlineRegular, IconAppsAddOutlineRegular, IconChevronDownOutlineRegular,
+  IconChevronLeftOutlineRegular, IconChevronRightOutlineRegular, IconCheckOutlineRegular,
+  IconPinOutlineRegular, IconPinFillRegular, IconArchiveOutlineRegular, IconInfoOutlineRegular,
+  IconRightUpOutlineRegular, IconCloseOutlineRegular, IconSettingsOutlineRegular, IconSkillOutlineRegular,
+  IconLayersOutlineRegular, IconAlarmClockOutlineRegular, IconCordisPluginOutlineRegular,
+  IconPanelLeftOutlineRegular, IconDownloadOutlineRegular, IconEllipsisOutlineRegular
+} = require('@deepseek-ai/dsh-client-ui-primitives');
 const { createSnapshotStore } = require('@deepseek-ai/dsh-client-store');
 const h = React.createElement;
 const { useState, useEffect, useLayoutEffect, useRef, useMemo, useCallback, useSyncExternalStore, useId } = React;
 const PLUGIN_ID = 'dsh-codex-ui';
 
-// 自绘图标沿用本项目原型；功能与目录全部来自宿主。
-const paths = {
-  folder: 'M2.3 6.1c0-.75.6-1.35 1.35-1.35H6.2l1.5 1.6h4.85c.75 0 1.35.6 1.35 1.35v4.9c0 .75-.6 1.35-1.35 1.35h-8.9c-.75 0-1.35-.6-1.35-1.35Z',
-  folderOpen: 'M2.1 12.2V4.4c0-.8.6-1.4 1.4-1.4h2.9l1.4 1.6h4c.8 0 1.4.6 1.4 1.4v1M2.1 12.2l2.2-4.8h9.3a.8.8 0 0 1 .7 1.1l-1.8 4a1.5 1.5 0 0 1-1.4.9H3.5a1.4 1.4 0 0 1-1.4-1.2Z',
-  chat: 'M13 7.5a5 5 0 0 1-5 5H3l-1 1V7.5a5.5 5.5 0 1 1 11 0Z',
-  pencil: 'M8.1 2.8H4.6a2 2 0 0 0-2 2v6.6a2 2 0 0 0 2 2h6.6a2 2 0 0 0 2-2V7.9m-2.3-5.2-5.3 5.3L5 10.4l2.4-.6 5.3-5.3a1.3 1.3 0 0 0-1.8-1.8ZM9.8 3.8l1.8 1.8',
-  search: 'M10.5 10.5 14 14M11.5 7a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z',
-  plus: 'M8 3v10M3 8h10',
-  more: 'M2 2h4v4H2zM2 10h4v4H2zM10 10h4v4h-4zM10 4h4M12 2v4',
-  chevron: 'm5 6 3 3 3-3',
-  back: 'm10 3-5 5 5 5',
-  check: 'm3.5 8 3 3 6-6',
-  shield: 'M8 1.8 13 4v4.2c0 2.8-2.3 4.8-5 6-2.7-1.2-5-3.2-5-6V4ZM8 5v3.6m0 2.1v.1',
-  pin: 'm5 2 6 0-1 4 2 2H9v5l-1 1V8H4l2-2Z',
-  archive: 'M3 5.5v6.3c0 .9.7 1.7 1.7 1.7h6.6c1 0 1.7-.8 1.7-1.7V5.5M2.5 2.5h11v3h-11ZM6.2 8h3.6',
-  monitor: 'M2 3h12v8H2zM5.5 13h5M8 11v2',
-  arrowUpRight: 'M4.8 11.2 11.2 4.8M5.9 4.8h5.3v5.3',
-  close: 'M4 4l8 8M12 4l-8 8',
-  settings: 'M6.5 2.5 7 1h2l.5 1.5 1.6.9 1.5-.3 1 1.8-1 1.2v1.8l1 1.2-1 1.8-1.5-.3-1.6.9L9 13H7l-.5-1.5-1.6-.9-1.5.3-1-1.8 1-1.2V6.1l-1-1.2 1-1.8 1.5.3ZM10.2 7a2.2 2.2 0 1 1-4.4 0 2.2 2.2 0 0 1 4.4 0Z',
-  skill: 'M8 2 14 5.2v5.6L8 14 2 10.8V5.2ZM8 2v6m6-2.8L8 11.4 2 5.2'
+// 图标统一使用宿主产品图标（宿主 sprite 渲染、描边网格与 DSH 原生一致、继承 currentColor）。
+// 无直接对应的沿用宿主语义最近项：chat→NewChat、monitor→Info、more→AppsAdd。
+const NATIVE_ICONS = {
+  folder: IconFolderCloseRegular, folderOpen: IconFolderOpenRegular, chat: IconNewChatOutlineRegular,
+  pencil: IconEditOutlineRegular, search: IconSearchOutlineRegular, plus: IconPlusOutlineRegular,
+  more: IconAppsAddOutlineRegular, chevron: IconChevronDownOutlineRegular, check: IconCheckOutlineRegular,
+  pin: IconPinOutlineRegular, archive: IconArchiveOutlineRegular, monitor: IconInfoOutlineRegular,
+  arrowUpRight: IconRightUpOutlineRegular, close: IconCloseOutlineRegular,
+  settings: IconSettingsOutlineRegular, skill: IconSkillOutlineRegular
 };
-function Icon({ name, size = 16, ...props }) {
-  return h('svg', { viewBox: '0 0 16 16', width: size, height: size, fill: 'none', stroke: 'currentColor', strokeWidth: 1.4, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true, ...props }, h('path', { d: paths[name] || paths.chat }));
+function Icon({ name, size = 16, className }) {
+  return h(NATIVE_ICONS[name] || NATIVE_ICONS.chat, { size, className });
 }
 // 以页面时间轴零点对齐，错开开始、等待恢复和重新挂载的运行圈保持同一转角。
 function syncSessionSpinner(svg) {
@@ -252,8 +250,7 @@ function HoverCard({ anchor, kind, onClose, onEnter, onLeave, children }) {
 }
 // 图钉为真实状态指示：DSH 只有会话置顶、没有工作区置顶，因此工作区始终显示空心「未置顶」。
 function PinMark({ filled }) {
-  return h('svg', { viewBox: '0 0 16 16', width: 14, height: 14, fill: filled ? 'currentColor' : 'none', stroke: 'currentColor', strokeWidth: 1.3, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true },
-    h('g', { transform: 'rotate(45 8 8)' }, h('path', { d: 'M6 2.5h4v3L12 8.5H4L6 5.5ZM8 8.5V14' })));
+  return filled ? h(IconPinFillRegular, { size: 14 }) : h(IconPinOutlineRegular, { size: 14 });
 }
 function ProjectHoverCard({ data, anchor, onReveal, onEdit, ...root }) {
   return h(HoverCard, { anchor, kind: 'project', ...root },

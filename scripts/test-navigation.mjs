@@ -38,7 +38,7 @@ async function loadFixture() {
           if (name === 'react') return { Component: class {}, createElement: () => null, Fragment: 'fragment' };
           if (name === 'react-dom') return { createPortal: () => null };
           if (name === '@deepseek-ai/dsh-client-store') return { createSnapshotStore };
-          if (name === '@deepseek-ai/dsh-client-ui-primitives') return {};
+          if (name === '@deepseek-ai/dsh-client-ui-primitives') return new Proxy({}, { get: () => () => null });
           return {};
         });
       }

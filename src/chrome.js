@@ -36,8 +36,14 @@ function initializeSidebarWidth(ctx) {
   };
 }
 
+// 轨道级图标同样使用宿主产品图标；home 无原生房子图标，沿用宿主 Layers。
+// 图标组件在主客户端源码中才解构，这里必须在调用时解析，避免顶层引用早于初始化。
 function PrototypeIcon({ name, className = '' }) {
-  return h('span', { className: 'dsc-proto-icon ' + className, 'aria-hidden': true, dangerouslySetInnerHTML: { __html: PROTOTYPE_ICONS[name] } });
+  const component = {
+    home: IconLayersOutlineRegular, tasks: IconAlarmClockOutlineRegular,
+    plugins: IconCordisPluginOutlineRegular, settings: IconSettingsOutlineRegular, newChat: IconNewChatOutlineRegular
+  }[name] || IconLayersOutlineRegular;
+  return h(component, { size: 16, className });
 }
 function useSlotVersion(ctx, names) {
   const axis = names.join('|');
@@ -473,7 +479,7 @@ function makeShellChrome(ctx, sidebar) {
 // 此常驻入口不替换 AppFrame，也不修改系统标题栏；collapsed 时仍可重新打开侧栏。
 function makeSidebarToggle(ctx) {
   return function SidebarToggle() {
-    return createPortal(h('div', { className: 'dsc-ui dsc-window-sidebar-toggle' }, h('button', { type: 'button', className: 'dsc-icon-button', title: '显示或隐藏侧边栏', 'aria-label': '显示或隐藏侧边栏', onClick: () => ctx.layout.toggleSidebar() }, h('svg', { viewBox: '0 0 16 16', width: 16, height: 16, fill: 'none', stroke: 'currentColor', strokeWidth: 1.2, 'aria-hidden': true }, h('rect', { x: 2, y: 3, width: 12, height: 10, rx: 1.5 }), h('path', { d: 'M6 3v10' })))), document.body);
+    return createPortal(h('div', { className: 'dsc-ui dsc-window-sidebar-toggle' }, h('button', { type: 'button', className: 'dsc-icon-button', title: '显示或隐藏侧边栏', 'aria-label': '显示或隐藏侧边栏', onClick: () => ctx.layout.toggleSidebar() }, h(IconPanelLeftOutlineRegular, { size: 16 }))), document.body);
   };
 }
 

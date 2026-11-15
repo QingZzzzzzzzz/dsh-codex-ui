@@ -145,26 +145,9 @@ function groupSkills(skills) {
   return groups.filter(group => group.skills.length > 0);
 }
 
-// 自绘实心立方体：无真实图标元数据时的唯一 fallback，按名称在黄 / 紫两款原创配色中选择。
-function SkillCube({ size = 40, tone = 'amber' }) {
-  const palette = tone === 'violet'
-    ? { top: '#9b7cf2', left: '#7350d8', right: '#5a3cb8', edge: '#c3b0ff' }
-    : { top: '#f4c95d', left: '#d59b2d', right: '#a9741c', edge: '#ffe29a' };
-  return h('svg', { viewBox: '0 0 40 40', width: size, height: size, 'aria-hidden': true, className: 'dsc-skill-cube' },
-    h('path', { d: 'M20 4 35 12.5 20 21 5 12.5Z', fill: palette.top }),
-    h('path', { d: 'M5 12.5 20 21v15L5 27.5Z', fill: palette.left }),
-    h('path', { d: 'M35 12.5 20 21v15l15-8.5Z', fill: palette.right }),
-    h('path', { d: 'M20 4 35 12.5 20 21 5 12.5Z', fill: 'none', stroke: palette.edge, strokeWidth: 1.1, opacity: .55 }));
-}
-function cubeTone(skill) {
-  let hash = 0;
-  for (const char of String(skill.name)) hash = (hash * 31 + char.charCodeAt(0)) % 997;
-  return hash % 2 === 0 ? 'amber' : 'violet';
-}
-
 function SkillCard({ skill, onOpen }) {
   return h('button', { type: 'button', className: 'dsc-skill-card', onClick: e => onOpen(skill, e.currentTarget) },
-    h('span', { className: 'dsc-skill-card-icon' }, h(SkillCube, { tone: cubeTone(skill) })),
+    h('span', { className: 'dsc-skill-card-icon' }, h(IconSkillOutlineRegular, { size: 40 })),
     h('span', { className: 'dsc-skill-card-copy' },
       h('span', { className: 'dsc-skill-card-title' }, skill.name),
       h('span', { className: 'dsc-skill-card-desc' }, skill.description)),
@@ -325,10 +308,10 @@ function SkillsDetail({ ctx, controller, scope, skill, onClose, restoreFocus }) 
   const hasPath = skill.path !== undefined;
   // 原生 MarkdownText 的 labels 代码块契约不可为空；userInvocable=false 时不得出现“立即试用”命令按钮。
   const canTry = skill.invocation?.userInvocable !== false;
-  const iconNode = h('span', { className: 'dsc-skills-dialog-icon' }, h(SkillCube, { tone: cubeTone(skill) }));
+  const iconNode = h('span', { className: 'dsc-skills-dialog-icon' }, h(IconSkillOutlineRegular, { size: 40 }));
   const actionsNode = h('div', { className: 'dsc-skills-dialog-headactions' },
     h('button', { type: 'button', ref: menuAnchor, className: 'dsc-icon-button', title: '更多', 'aria-label': '更多', 'aria-haspopup': 'menu', 'aria-expanded': menuOpen, onClick: () => setMenuOpen(!menuOpen) },
-      h('svg', { viewBox: '0 0 16 16', width: 16, height: 16, 'aria-hidden': true }, [4, 8, 12].map(x => h('circle', { key: x, cx: x, cy: 8, r: 1.4, fill: 'currentColor' })))),
+      h(IconEllipsisOutlineRegular, { size: 16 })),
     h('button', { type: 'button', ref: closeButton, className: 'dsc-icon-button', title: '关闭', 'aria-label': '关闭', onClick: onClose }, h(Icon, { name: 'close', size: 16 })));
   const headRow = h('div', { className: 'dsc-skills-dialog-headrow' }, iconNode, actionsNode);
   const menuNode = menuOpen && h(Popover, { anchor: menuAnchor, onClose: () => setMenuOpen(false), label: '技能操作', width: 220, placement: 'bottom' },

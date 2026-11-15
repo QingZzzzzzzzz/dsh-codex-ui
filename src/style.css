@@ -62,8 +62,6 @@ body[data-dsh-codex-chrome] [data-conversation-content] > [data-conversation-scr
 .dsc-update-spin { animation: dsc-update-spin .9s linear infinite; }
 @keyframes dsc-update-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .dsc-update-spin, .dsc-update-progress-fill { animation: none !important; transition: none; } }
-.dsc-proto-icon { display: inline-flex; align-items: center; justify-content: center; flex: none; line-height: 1; }
-.dsc-proto-icon svg { display: block; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
 /* 同一内容 portal 到 body：常驻时跟随宿主列，退场与浮卡不受 0px 列裁剪。只动画透明度和位移。 */
 .dsc-sidebar-shell { visibility: hidden; position: fixed; z-index: 20; min-width: 0; min-height: 0; display: flex; opacity: 0; transform: translateX(-24px); pointer-events: none; transition: opacity 180ms ease, transform 240ms var(--cx-ease-out), visibility 0s 240ms; -webkit-app-region: no-drag; }
 .dsc-sidebar-shell[data-open=true] { visibility: visible; opacity: 1; transform: translateX(0); pointer-events: auto; transition: opacity 180ms ease, transform 260ms var(--cx-ease-out), visibility 0s; }
@@ -132,7 +130,6 @@ body[data-dsh-codex-chrome] [data-dsc-extension-nav] [data-dsc-extension-glyph] 
 .dsc-secondary-nav { display: flex; flex-direction: column; gap: 4px; min-height: 0; overflow: auto; padding-top: 6px; }
 .dsc-secondary-nav .dsc-secondary-item { display: flex; align-items: center; gap: 8px; min-height: 32px; width: 100%; padding: 0 8px; border-radius: var(--cx-radius-md); text-align: left; color: var(--cx-text-2); font-size: 13px; }
 .dsc-secondary-nav .dsc-secondary-item.is-active, .dsc-secondary-nav .dsc-secondary-item:hover { background: var(--cx-active); color: var(--cx-text); }
-.dsc-secondary-item .dsc-proto-icon svg { width: 16px; height: 16px; }
 .dsc-more-hint { margin: 0 8px 8px; color: var(--cx-text-3); font-size: 12px; line-height: 1.6; }
 .dsc-more-group { display: flex; flex-direction: column; gap: 4px; flex: none; }
 .dsc-more-group-title { margin: 4px 8px 0; color: var(--cx-text-3); font-size: 12px; font-weight: 500; }

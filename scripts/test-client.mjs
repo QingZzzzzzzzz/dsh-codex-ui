@@ -317,7 +317,7 @@ async function footerActionsFixture() {
     if (name === 'react') return { Component: class {} };
     if (name === 'react-dom') return { createPortal: node => node };
     if (name === '@deepseek-ai/dsh-client-store') return { createSnapshotStore: value => ({ getSnapshot: () => value, set: next => { value = next; } }) };
-    if (name === '@deepseek-ai/dsh-client-ui-primitives') return {};
+    if (name === '@deepseek-ai/dsh-client-ui-primitives') return new Proxy({}, { get: () => () => null });
     return {};
   }); } }, localStorage: { getItem: () => null }, addEventListener() {}, removeEventListener() {}, innerHeight: 900 };
   const document = {

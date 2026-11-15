@@ -60,7 +60,7 @@ function DesktopUpdateGlyph({ view }) {
   ]);
   if (view.kind === 'busy') return svg(h('path', { d: 'M8 2.5a5.5 5.5 0 1 1-5.5 5.5' }), { className: 'dsc-update-spin' });
   if (view.kind === 'error') return svg(h('path', { d: 'M8 4v5m0 2.6v.1', strokeWidth: 1.9 }));
-  return svg(h('path', { d: 'M8 2.8v7.1M5.2 7.3 8 10.1l2.8-2.8M3.2 9.8v1.4c0 1 .8 1.8 1.8 1.8h6c1 0 1.8-.8 1.8-1.8V9.8' }));
+  return h(IconDownloadOutlineRegular, { size: 16 });
 }
 // 位于设置齿轮正上方：发现新版显示蓝圆箭头，下载中换为环形进度，悬停显示进度与目标版本。
 function DesktopUpdateRailButton({ source }) {

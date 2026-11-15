@@ -5,9 +5,7 @@ const NAVIGATION_BACK_ID = 'codex-style.navigation.back';
 const NAVIGATION_FORWARD_ID = 'codex-style.navigation.forward';
 const NAVIGATION_NATIVE_SHIFT = '68px';
 const NAVIGATION_EMPTY = { entries: [], index: -1, canBack: false, canForward: false, busy: false };
-// 后退/前进是直杆箭头；侧栏按钮继续使用现有按钮。
-const NAVIGATION_BACK_PATH = 'M12 8H3 M7 4 3 8l4 4';
-const NAVIGATION_FORWARD_PATH = 'M4 8h9 M9 4l4 4-4 4';
+// 后退/前进使用宿主 Chevron 图标；侧栏按钮继续使用现有按钮。
 
 // 会话 route 为 {panelId:null, sessionId}；主面板 route 为 {panelId, sessionId:null}，
 // 主面板期间不记录后台会话，避免后台会话变化制造同一面板的假历史。
@@ -156,8 +154,8 @@ function makeNavigationControls(ctx, controls, controller) {
     const backKeys = navigationCatalogKeys(catalog, NAVIGATION_BACK_ID);
     const forwardKeys = navigationCatalogKeys(catalog, NAVIGATION_FORWARD_ID);
     const buttons = [
-      { id: 'back', label: '返回', path: NAVIGATION_BACK_PATH, keys: backKeys, enabled: state.canBack, run: () => controller.back() },
-      { id: 'forward', label: '前进', path: NAVIGATION_FORWARD_PATH, keys: forwardKeys, enabled: state.canForward, run: () => controller.forward() }
+      { id: 'back', label: '返回', icon: IconChevronLeftOutlineRegular, keys: backKeys, enabled: state.canBack, run: () => controller.back() },
+      { id: 'forward', label: '前进', icon: IconChevronRightOutlineRegular, keys: forwardKeys, enabled: state.canForward, run: () => controller.forward() }
     ];
     const shown = tip !== null && state.entries.length > 0 ? tip : null;
     return createPortal(h(React.Fragment, null,
@@ -168,7 +166,7 @@ function makeNavigationControls(ctx, controls, controller) {
         onPointerEnter: () => setTip(button.id), onPointerLeave: () => setTip(null),
         onFocus: () => setTip(button.id), onBlur: () => setTip(null),
         onClick: () => { if (button.enabled) { setTip(null); button.run(); } }
-      }, h('svg', { viewBox: '0 0 16 16', width: 16, height: 16, fill: 'none', stroke: 'currentColor', strokeWidth: 1.4, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true }, h('path', { d: button.path }))))),
+      }, h(button.icon, { size: 16 })))),
       shown !== null && (() => {
         const button = buttons.find(item => item.id === shown);
         const anchor = anchors.current[shown];

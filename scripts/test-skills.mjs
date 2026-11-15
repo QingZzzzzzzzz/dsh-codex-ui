@@ -13,7 +13,7 @@ async function loadBundle() {
       if (name === 'react') return { createElement: (type, props, ...children) => ({ type, props: props || {}, children }), Component: class {}, Fragment: Symbol('Fragment'), createContext: () => ({ Provider: () => null }), memo: fn => fn, forwardRef: fn => fn, useState: initial => [typeof initial === 'function' ? initial() : initial, () => {}], useReducer: initial => [initial, () => {}], useEffect() {}, useLayoutEffect() {}, useRef: () => ({ current: null }), useMemo: fn => fn(), useCallback: fn => fn, useSyncExternalStore: () => null, useId: () => 'id' };
       if (name === 'react-dom') return { createPortal: node => node };
       if (name === '@deepseek-ai/dsh-client-store') return { createSnapshotStore: store };
-      if (name === '@deepseek-ai/dsh-client-ui-primitives') return { Button: () => null, IconRefreshOutlineRegular: () => null, MarkdownText: props => ({ type: 'markdown', props, children: [] }) };
+      if (name === '@deepseek-ai/dsh-client-ui-primitives') return new Proxy({ Button: () => null, MarkdownText: props => ({ type: 'markdown', props, children: [] }) }, { get: (target, prop) => prop in target ? target[prop] : () => null });
       if (name === 'zod') return { z: makeZodStub() };
       return {};
     }); } },
