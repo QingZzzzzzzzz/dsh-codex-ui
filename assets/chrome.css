@@ -26,9 +26,9 @@
 .rail__item:hover { background: var(--cx-hover); color: var(--cx-text); }
 .rail__item--active { background: var(--cx-active); color: var(--cx-text); }
 /* 插头先以浅灰 #efefef 统一描边，再整体降低透明度，避免相交线段叠色发亮。 */
-.rail__plugin-icon { color: #efefef; opacity: .5; stroke-width: 1.5; transition: opacity var(--cx-dur-fast) var(--cx-ease); }
+.rail__plugin-icon { color: var(--cx-text); opacity: .5; stroke-width: 1.5; transition: opacity var(--cx-dur-fast) var(--cx-ease); }
 .rail__item:hover .rail__plugin-icon,
-.rail__item--active .rail__plugin-icon { opacity: 1; color: #fcfcfc; }
+.rail__item--active .rail__plugin-icon { opacity: 1; color: var(--cx-text); }
 .rail__item::after {
   content: attr(data-tip);
   position: absolute;
@@ -40,7 +40,7 @@
   border: 1px solid var(--cx-border-l1);
   background: #2b2b2b;
   color: var(--cx-text);
-  font-size: 12px;
+
   line-height: 16px;
   white-space: nowrap;
   box-shadow: var(--cx-shadow-lg);
@@ -78,17 +78,13 @@
   height: 32px;
   padding: 0 8px;
   border-radius: var(--cx-radius-md);
-  font-size: 13px;
+
   font-weight: var(--cx-weight-medium);
   color: var(--cx-sidebar-text);
   background: var(--cx-active);
   transition: background-color var(--cx-dur-fast) var(--cx-ease);
 }
 .new-chat:hover { background: rgba(255, 255, 255, 0.12); }
-.new-chat kbd { margin-left: auto; font-size: 11px; color: var(--cx-sidebar-muted); }
+.new-chat kbd { margin-left: auto; color: var(--cx-sidebar-muted); }
 
 /* 浅色导航的插件线条保留原图形，深色提示仍为黑底白字。 */
-body[data-dsh-codex-style][data-dsc-color-scheme="light"] .rail__plugin-icon { color: #303030; }
-body[data-dsh-codex-style][data-dsc-color-scheme="light"] .rail__item--active .rail__plugin-icon { color: #0d0d0d; }
-body[data-dsh-codex-style][data-dsc-color-scheme="light"] .rail__item[data-tip]::after { background: #0d0d0d; color: #fff; }
-body[data-dsh-codex-style][data-dsc-color-scheme="light"] .new-chat:hover { background: rgba(0, 0, 0, .06); }

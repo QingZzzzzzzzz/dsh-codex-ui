@@ -10,6 +10,8 @@
 - **主模块精简**：删除输入区控件（模型选择、推理强度滑条、权限选择器）、正文效果（回合「已处理」、流式平滑）与会话头重绘（视图胶囊、工作区标记、收起态新建键），相应区域回退为宿主原生界面；正文列宽度同步逻辑一并移除。
 - **保留能力**：明暗主题 token、侧栏与导航轨道、「更多」页固定管理、齿轮菜单第三方分组、空态工作区行、技能页、页面前进后退、DSH 本体更新按钮、社区版提醒。
 - **再精简（第二轮）**：删除社区版运行提醒（含 `codexStyleEnvironment` Host 服务）、插件详情页支持区块、空态 hero（中央云朵图标与项目选择行，空态回退宿主原生）、输入区皮肤 CSS（发送/停止按钮与等待环等回退宿主原生外观）；品牌区删除自绘 logo 与文字，不再覆盖 `sidebar.brand.*`（原生品牌位于被隐藏的原生侧栏内，界面不再显示品牌区）。
+- **品牌恢复原生规格**：FishLogo/BrandWordmark 均按宿主尺寸 24px、间距 5px 渲染，与原生侧栏品牌完全一致。
+- **视觉全部改用宿主原生**：删除整套主题 token 覆盖系统（`tokenValues`/`lightTokenValues`/`mountCodexTheme`，全 app 回到 DSH 原生明暗主题）；`tokens.css` 颜色令牌全部映射宿主 `--dsw-*`；删除全部 `font-size`/`font-family`/`font` 声明（字体字号完全继承宿主）；删除全部浅色变体规则（宿主 token 自动跟随主题）；文本色按语义映射宿主 label 令牌；`test-theme.mjs` 随覆盖系统一并退役。
 - **包名改为 `@qinova-ai/dsh-codex-ui`**（原 `@qinova-ai/dsh-codex-style`）：组件 id 与包名统一；安装器新增历史包名迁移列表（`dsh-codex-style`、`@qinova-ai/dsh-codex-style`、`@xinxing1708/dsh-codex-style`），升级时自动改名而不再报「皮肤配置指向其他包」。
 - **侧栏品牌回填宿主原生 LOGO**：改用 `@deepseek-ai/dsh-client-ui-primitives` 的 `FishLogo` + `BrandWordmark`，与 DSH 原生品牌同一矢量；不再显示「项目与对话」文字标题。
 - **图标配色与字体对齐宿主**：项目行文件夹图标改用宿主语义 token（常态 `--dsw-alias-label-tertiary`，当前工作区 `--dsw-alias-state-business-primary`）；字族改用 `--dsw-font-family`（跟随用户在 DSH 里选择的字体），新建对话字号由 13px 对齐到宿主侧栏的 14px。

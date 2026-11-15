@@ -413,7 +413,7 @@ function makeSidebarChrome(ctx, sidebar, archiveNotice) {
     },
       h('aside', { key: category, className: 'dsc-sidebar', 'aria-label': category === 'home' ? '项目与对话' : category === 'tasks' ? '定时任务' : category === 'more' ? '更多' : category === 'skills' ? '技能' : '自定义' },
         h('div', { className: 'dsc-sidebar__header' }, category === 'home'
-          ? h('div', { className: 'dsc-brand-native', 'aria-label': 'DeepSeek Harness' }, h(FishLogo, { size: 20 }), h(BrandWordmark, { size: 15, includeMark: false }))
+          ? h('div', { className: 'dsc-brand-native', 'aria-label': 'DeepSeek Harness' }, h(FishLogo, { size: 24 }), h(BrandWordmark, { size: 24, includeMark: false }))
           : h('strong', { className: 'dsc-section-page-title' }, category === 'tasks' ? '定时任务' : category === 'more' ? '更多' : '自定义'),
           h('div', { className: 'dsc-sidebar__header-actions' }, h('button', { type: 'button', ref: searchAnchor, className: 'dsc-icon-button', title: '搜索对话与项目', 'aria-label': '搜索对话与项目', 'aria-expanded': searchOpen, onClick: openSearch }, h(Icon, { name: 'search' })))),
         category === 'home' && h('button', { type: 'button', className: 'dsc-new-chat', title: '新聊天', onClick: () => { setSearchOpen(false); setQuery(''); run(() => { ctx.uiWorkspace.startSession(); sidebar.hide(); }); } }, h(PrototypeIcon, { name: 'newChat' }), h('span', null, '新聊天')),

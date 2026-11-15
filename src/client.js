@@ -705,62 +705,9 @@ function makeWorkspaceTree(ctx, completionStore, archiveNotice) {
   };
 }
 
-// 明暗由宿主 ThemeSnapshot.active.colorScheme 决定；不接管用户的主题偏好。
-function mountCodexTheme(ctx, darkTokens, lightTokens) {
-  ctx.effect(() => ctx.theme.overrideTokens(PLUGIN_ID, Object.fromEntries(Object.entries(darkTokens).map(([key, dark]) => [key, { light: lightTokens[key] ?? dark, dark }]))), 'codex-style: theme');
-  ctx.effect(() => {
-    const previous = document.body.getAttribute('data-dsc-color-scheme');
-    // 旧版本曾把这个自定义 id 写为当前偏好；升级时仅迁回等价的内置深色。
-    if (ctx.theme.getTheme()?.preference === 'dsh-codex-dark') ctx.theme.setTheme('dark');
-    const sync = snapshot => document.body.setAttribute('data-dsc-color-scheme', snapshot.active.colorScheme);
-    sync(ctx.theme.getTheme());
-    const off = ctx.on('theme/change', sync);
-    return () => {
-      off();
-      if (previous === null) document.body.removeAttribute('data-dsc-color-scheme');
-      else document.body.setAttribute('data-dsc-color-scheme', previous);
-    };
-  }, 'codex-style: theme mode');
-}
-
 function apply(ctx) {
   console.warn('[codex-style] apply 开始 v' + PLUGIN_VERSION);
   ctx.inject(['remote', 'remote.pluginInventory'], scope => scope.effect(() => watchCodexPresentation(scope), 'codex-style: presentation component states'));
-  const tokenValues = {
-    '--dsw-alias-bg-base': '#111111', '--dsw-alias-bg-layer-1': '#212121', '--dsw-alias-bg-layer-2': '#282828', '--dsw-alias-bg-layer-3': '#2d2d2d', '--dsw-alias-bg-overlay': '#282828',
-    '--dsw-alias-bg-module-platform': '#0f0f0f', '--dsw-alias-label-primary': '#fcfcfc', '--dsw-alias-label-secondary': 'rgba(255,255,255,.7)', '--dsw-alias-label-tertiary': 'rgba(255,255,255,.5)',
-    '--dsw-alias-label-caption': 'rgba(255,255,255,.5)', '--dsw-alias-label-dimmed': 'rgba(255,255,255,.32)', '--dsw-alias-label-primary-dimmed': 'rgba(255,255,255,.6)', '--dsw-alias-label-primary-bluish': '#eef3ff', '--dsw-alias-label-primary-inverted': '#131313',
-    // 保留成熟深色值；浅色在下方提供独立语义值。
-    '--dsw-alias-button-elevated-fill': 'var(--cx-active)', '--dsw-alias-button-floating-hover': 'rgba(255,255,255,.12)',
-    '--dsw-alias-border-l1': 'rgba(255,255,255,.08)', '--dsw-alias-border-l2': 'rgba(255,255,255,.08)', '--dsw-alias-border-l3': 'rgba(255,255,255,.12)', '--dsw-alias-border-l4': 'rgba(255,255,255,.16)',
-    '--dsw-alias-brand-primary': '#0285ff', '--dsw-alias-link': '#339cff', '--dsw-alias-interactive-bg-hover': 'rgba(255,255,255,.08)', '--dsw-alias-interactive-bg-hover-solid': '#282828',
-    // 2026-10-23 按用户 Codex 截图采样：顶栏/窗口 chrome #202020、用户气泡 #222222（对话区保持 #181818）。
-    '--dsw-specific-sidebar-fill': '#0f0f0f', '--dsw-specific-bubble': '#1d1d1d', '--dsw-specific-input-major': '#2b2b2b', '--dsw-specific-menu': '#2d2d2d', '--dsw-specific-selector': 'transparent',
-    // 设置页左栏与侧栏导航项：light 主题下宿主给浅色底，插件把文字固定为白色，会成白底白字；这里按宿主暗色主题成对补齐。
-    '--dsw-specific-sidebar-nav-item-active': '#43454a', '--dsw-specific-sidebar-nav-item-hover': '#2c2c2e', '--dsw-specific-sidebar-nav-item-active-accent': '#353638',
-    // markdown 代码外观：light 主题下 inline code / 代码块顶栏也是浅底，需一并转成与对话背景有区分的深色。
-    '--dsw-alias-markdown-code-block': '#212121', '--dsw-alias-markdown-inline-code': '#292929', '--dsw-alias-markdown-code-block-banner': '#2c2c2e',
-    '--dsw-alias-markdown-code-segment-selected': '#353638', '--dsw-alias-markdown-code-segment-unselected': '#1b1b1c',
-    '--dsw-alias-state-business-primary': '#339cff', '--dsw-alias-state-business-tertiary': '#0285ff26', '--dsw-alias-state-error-primary': '#ff6764', '--dsw-alias-state-warn-primary': '#ff8549', '--dsw-alias-state-warn-secondary': '#ff8549bb', '--dsw-alias-state-warn-tertiary': '#ff854926',
-    '--dsw-alias-scrollbar-bg-l1': '#ffffff26', '--dsw-alias-scrollbar-bg-l2': '#ffffff32', '--dsw-alias-scrollbar-hover-l2': '#ffffff59',
-    '--dsw-radius-panel': '25px', '--dsw-menu-surface-fill': '#2d2d2d', '--dsw-elevation-soft': '0 0 0 .5px rgba(255,255,255,.16),0 3px 8px #0000000a'
-  };
-  const lightTokenValues = {
-    '--dsw-alias-bg-base': '#ffffff', '--dsw-alias-bg-layer-1': '#f3f3f3', '--dsw-alias-bg-layer-2': '#ffffff', '--dsw-alias-bg-layer-3': '#ffffff', '--dsw-alias-bg-overlay': '#ffffff',
-    '--dsw-alias-bg-module-platform': '#f3f3f3', '--dsw-alias-label-primary': '#0d0d0d', '--dsw-alias-label-secondary': 'rgba(0,0,0,.7)', '--dsw-alias-label-tertiary': 'rgba(0,0,0,.5)',
-    '--dsw-alias-label-caption': 'rgba(0,0,0,.5)', '--dsw-alias-label-dimmed': 'rgba(0,0,0,.32)', '--dsw-alias-label-primary-dimmed': 'rgba(0,0,0,.6)', '--dsw-alias-label-primary-bluish': '#19355a', '--dsw-alias-label-primary-inverted': '#ffffff',
-    '--dsw-alias-button-floating-hover': 'rgba(0,0,0,.08)',
-    '--dsw-alias-border-l1': 'rgba(0,0,0,.08)', '--dsw-alias-border-l2': 'rgba(0,0,0,.08)', '--dsw-alias-border-l3': 'rgba(0,0,0,.12)', '--dsw-alias-border-l4': 'rgba(0,0,0,.16)',
-    '--dsw-alias-brand-primary': '#2b68cb', '--dsw-alias-link': '#2b68cb', '--dsw-alias-interactive-bg-hover': 'rgba(0,0,0,.045)', '--dsw-alias-interactive-bg-hover-solid': '#eeeeee',
-    '--dsw-specific-sidebar-fill': '#f3f3f3', '--dsw-specific-bubble': '#f3f3f3', '--dsw-specific-input-major': '#ffffff', '--dsw-specific-menu': '#ffffff',
-    '--dsw-specific-sidebar-nav-item-active': '#eeeeee', '--dsw-specific-sidebar-nav-item-hover': '#f3f3f3', '--dsw-specific-sidebar-nav-item-active-accent': '#e5e5e5',
-    '--dsw-alias-markdown-code-block': '#f6f6f6', '--dsw-alias-markdown-inline-code': '#f1f1f1', '--dsw-alias-markdown-code-block-banner': '#eeeeee',
-    '--dsw-alias-markdown-code-segment-selected': '#e5e5e5', '--dsw-alias-markdown-code-segment-unselected': '#fafafa',
-    '--dsw-alias-state-business-primary': '#2b68cb', '--dsw-alias-state-business-tertiary': '#2b68cb18', '--dsw-alias-state-error-primary': '#c93632', '--dsw-alias-state-warn-primary': '#dd5512', '--dsw-alias-state-warn-secondary': '#dd5512bb', '--dsw-alias-state-warn-tertiary': '#dd551218',
-    '--dsw-alias-scrollbar-bg-l1': '#00000018', '--dsw-alias-scrollbar-bg-l2': '#00000024', '--dsw-alias-scrollbar-hover-l2': '#00000040',
-    '--dsw-menu-surface-fill': '#ffffff', '--dsw-elevation-soft': '0 0 0 .5px rgba(0,0,0,.08),0 3px 8px #0000000a'
-  };
-  mountCodexTheme(ctx, tokenValues, lightTokenValues);
   ctx.effect(() => {
     const previous = document.body.getAttribute('data-dsh-codex-style');
     document.body.setAttribute('data-dsh-codex-style', PLUGIN_VERSION);
@@ -802,5 +749,5 @@ function apply(ctx) {
   ctx.slots.inject('shell.overlay', () => ctx.slots.register({ name: 'shell.overlay', id: 'codex-style:desktop-update' }, () => createPortal(h('div', { className: 'dsc-ui dsc-desktop-update-launcher' }, h(DesktopUpdateRailButton, { source: desktopUpdates })), document.body)));
 }
 exports.name = 'dsh-codex-ui';
-exports.inject = ['slots', 'theme'];
+exports.inject = ['slots'];
 exports.apply = apply;

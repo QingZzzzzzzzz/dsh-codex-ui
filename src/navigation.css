@@ -29,14 +29,14 @@ body[data-dsc-codex-navigation] .dsc-nav-controls {
   border: 0;
   border-radius: 8px;
   background: transparent;
-  color: #8f8f8f;
+  color: var(--cx-text-3);
   cursor: default;
   -webkit-app-region: no-drag;
   transition: background-color 120ms ease, color 120ms ease;
 }
 
 .dsc-nav-controls .dsc-nav-button[aria-disabled='true'] {
-  color: #535353;
+  color: var(--cx-text-2);
 }
 
 .dsc-nav-controls .dsc-nav-button:not([aria-disabled='true']) {
@@ -46,7 +46,7 @@ body[data-dsc-codex-navigation] .dsc-nav-controls {
 .dsc-nav-controls .dsc-nav-button:not([aria-disabled='true']):hover,
 .dsc-nav-controls .dsc-nav-button:not([aria-disabled='true']):focus-visible {
   background: #ffffff14;
-  color: #b4b4b4;
+  color: var(--cx-text-3);
 }
 
 .dsc-nav-controls .dsc-nav-button:focus-visible {
@@ -77,8 +77,8 @@ body[data-dsc-codex-navigation] .dsc-window-sidebar-toggle .dsc-icon-button {
   padding: 6px 10px;
   border-radius: 12px;
   background: #303030;
-  color: #e8e8e8;
-  font-size: 13px;
+  color: var(--cx-text);
+
   line-height: 18px;
   white-space: nowrap;
   box-shadow: 0 6px 20px #0006;
@@ -103,14 +103,14 @@ body[data-dsc-codex-navigation] .dsc-window-sidebar-toggle .dsc-icon-button {
   border-radius: 6px;
   background: #505050;
   color: #ededed;
-  font-size: 11px;
+
   line-height: 18px;
 }
 
 .dsc-nav-tooltip__plus {
   padding: 0 1px;
-  color: #8a8a8a;
-  font-size: 11px;
+  color: var(--cx-text-3);
+
   line-height: 18px;
 }
 
@@ -130,9 +130,3 @@ body[data-dsc-codex-navigation] [data-dsc-navigation-native-toggle] {
   }
 }
 
-body[data-dsh-codex-style][data-dsc-color-scheme="light"] .dsc-nav-controls .dsc-nav-button { color: #898989; }
-body[data-dsh-codex-style][data-dsc-color-scheme="light"] .dsc-nav-controls .dsc-nav-button[aria-disabled='true'] { color: #c1c1c1; }
-body[data-dsh-codex-style][data-dsc-color-scheme="light"] .dsc-nav-controls .dsc-nav-button:not([aria-disabled='true']):hover,
-body[data-dsh-codex-style][data-dsc-color-scheme="light"] .dsc-nav-controls .dsc-nav-button:not([aria-disabled='true']):focus-visible { background: #0000000d; color: #303030; }
-body[data-dsh-codex-style][data-dsc-color-scheme="light"] .dsc-nav-controls .dsc-nav-button:focus-visible { outline-color: #2b68cb; }
-body[data-dsh-codex-style][data-dsc-color-scheme="light"] .dsc-nav-tooltip { background: #0d0d0d; color: #fff; }
