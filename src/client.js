@@ -659,24 +659,6 @@ function makeWorkspaceTree(ctx, completionStore, archiveNotice) {
     const projectHeading = h('div', { className: 'dsc-tree-tools', 'data-compact': !tools },
       h('button', { type: 'button', className: 'dsc-projects-toggle', 'aria-label': '项目', 'aria-expanded': projectsOpen, onClick: () => { hideHover(); setMenu(null); setProjectMenu(null); setProjectsOpen(!projectsOpen); } }, h('span', { className: 'dsc-tree-tools-label' }, '项目'), h(Icon, { name: 'chevron', size: 12 })),
       h('button', { type: 'button', className: 'dsc-icon-button', title: '添加工作区', onClick: addWorkspace, disabled: adding }, h(Icon, { name: 'plus' })));
-    const [account, setAccount] = useState(null);
-    const [accountAvatarFailed, setAccountAvatarFailed] = useState(false);
-    useEffect(() => {
-      let active = true;
-      const version = ctx.modules?.manifest?.release?.version;
-      if (!version) return undefined;
-      const client = { version, locale: ctx.locale.getSnapshot().active, timezoneOffsetSeconds: -new Date().getTimezoneOffset() * 60 };
-      ctx.remote.account.getProfile(client).then(result => {
-        if (!result.ok) throw result.error;
-        if (active) setAccount(result.value?.status === 'ready' ? result.value.value : null);
-      }).catch(() => {});
-      return () => { active = false; };
-    }, [ctx]);
-    const openAccountEntry = () => {
-      const gear = typeof document !== 'undefined' && document.querySelector('.dsc-gear-button');
-      if (gear) gear.click();
-      onNavigate?.();
-    };
     return h('div', { className: 'dsc-ui dsc-workspaces' },
       query && projectHeading,
       h(ErrorLine, { text: message || (catalog.error && errorText(catalog.error)) || (workspaces.error && errorText(workspaces.error)) }),
@@ -705,10 +687,6 @@ function makeWorkspaceTree(ctx, completionStore, archiveNotice) {
         !visible.length && catalog.phase === 'ready' && h('div', { className: 'dsc-empty' }, query ? '没有匹配的对话' : '选择项目，开始新对话'),
         catalog.phase !== 'ready' && h('div', { className: 'dsc-empty', role: 'status' }, '正在加载会话…'))),
       h('label', { className: 'dsc-archive-toggle' }, h('input', { type: 'checkbox', checked: showArchived, onChange: e => setShowArchived(e.target.checked) }), '显示已归档对话'),
-      h('div', { className: 'dsc-side-footer' },
-        h('button', { type: 'button', className: 'dsc-side-entry', onClick: () => run(() => { ctx.layout.selectPanel('plugins'); onNavigate?.(); }) }, h(Icon, { name: 'plugins' }), h('span', null, '插件')),
-        h('button', { type: 'button', className: 'dsc-side-entry', onClick: () => run(() => { ctx.layout.selectPanel('schedules'); onNavigate?.(); }) }, h(Icon, { name: 'tasks' }), h('span', null, '自动化任务')),
-        h('button', { type: 'button', className: 'dsc-side-entry', title: '账号与设置', onClick: openAccountEntry }, account && account.avatarUrl && !accountAvatarFailed ? h('img', { src: account.avatarUrl, alt: '', onError: () => setAccountAvatarFailed(true) }) : h(IconUserOutlineRegular, { size: 18 }), h('span', null, (account && (account.contact || account.name)) || '账号'))),
       menu && h(Popover, { anchor: menuAnchor, point: menu.point, onClose: () => setMenu(null), label: '对话菜单', width: 228 },
         h(Option, { title: '重命名', icon: 'pencil', onClick: () => { const target = menu; setMenu(null); hideHover(); setRenaming(target); } }),
         h(Option, { title: pinned.has(menu.sessionId) ? '取消置顶' : '置顶', icon: 'pin', onClick: () => { const target = menu; setMenu(null); togglePin(target); } }),

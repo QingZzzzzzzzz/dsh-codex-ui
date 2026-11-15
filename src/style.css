@@ -252,13 +252,6 @@ body[data-dsh-codex-chrome] .dsc-independent-rail [data-dsc-app-footer-clear-ite
 .dsc-ui.dsc-window-sidebar-toggle .dsc-icon-button { color: var(--cx-sidebar-muted); }
 .dsc-ui.dsc-window-sidebar-toggle .dsc-icon-button:hover, .dsc-ui.dsc-window-sidebar-toggle .dsc-icon-button:focus-visible { color: var(--cx-sidebar-text); }
 .dsc-tree-scroll { flex: 1; min-height: 0; overflow: auto; scrollbar-width: thin; padding: 0 8px; }
-/* 侧栏底部固定入口：插件 / 自动化任务 / 账号。颜色走宿主令牌，点击打开原生页面。 */
-.dsc-side-footer { flex: none; padding: 6px 8px 8px; border-top: 1px solid var(--cx-border-l1); display: flex; flex-direction: column; gap: 2px; }
-.dsc-side-entry { display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border: 0; border-radius: 7px; background: transparent; color: var(--cx-sidebar-text); cursor: pointer; text-align: left; }
-.dsc-side-entry:hover, .dsc-side-entry:focus-visible { background: var(--cx-hover); }
-.dsc-side-entry img { width: 18px; height: 18px; border-radius: 50%; flex: none; object-fit: cover; }
-.dsc-side-entry svg { flex: none; color: var(--cx-sidebar-muted); }
-.dsc-side-entry span { min-width: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dsc-section-title { padding: 12px 8px 6px; font-weight: 500; color: var(--cx-sidebar-muted); }
 .dsc-thread, .dsc-project { display: flex; align-items: center; height: 30px; border-radius: 7px; position: relative; }
 .dsc-thread:hover, .dsc-project:hover, .dsc-thread.is-active { background: #ffffff0d; }

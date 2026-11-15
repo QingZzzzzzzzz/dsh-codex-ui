@@ -87,13 +87,6 @@ test('built sidebar keeps the native brand inside a safe header and uses host ic
   for (const icon of ['IconLayersOutlineRegular', 'IconAlarmClockOutlineRegular', 'IconCordisPluginOutlineRegular', 'IconAppsAddOutlineRegular']) assert.equal(bundle.includes(icon), true, icon);
 });
 
-test('built sidebar pins plugins/tasks/account entries above the footer', async () => {
-  const bundle = await readFile(new URL('../lib/client.js', import.meta.url), 'utf8');
-  assert.equal(bundle.includes('dsc-side-footer'), true);
-  assert.equal(bundle.includes('自动化任务'), true);
-  assert.equal(bundle.includes('IconUserOutlineRegular'), true);
-});
-
 test('inventory errors and stale replies leave navigation disabled', async t => {
   const f = await presentationFixture(t);
   await f.set(true);
