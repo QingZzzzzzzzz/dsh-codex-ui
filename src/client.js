@@ -297,7 +297,7 @@ function EditWorkspaceDialog({ workspace, onClose, onRename, onDelete }) {
   };
   const remove = async () => {
     if (busy) return;
-    if (!window.confirm(`移除本地项目「${workspace.title || ''}」？项目中的对话会保留在“最近”中。`)) return;
+    if (!window.confirm(`移除本地项目「${workspace.title || ''}」？项目中的对话会保留在项目分组中。`)) return;
     setBusy('remove'); setError('');
     try { await onDelete(); onClose(); } catch (e) { setError(errorText(e)); setBusy(''); }
   };
@@ -685,7 +685,7 @@ function makeWorkspaceTree(ctx, completionStore, archiveNotice) {
           }))),
           
         !visible.length && catalog.phase === 'ready' && h('div', { className: 'dsc-empty' }, query ? '没有匹配的对话' : '选择项目，开始新对话'),
-        catalog.phase !== 'ready' && h('div', { className: 'dsc-empty', role: 'status' }, '正在加载会话…')),
+        catalog.phase !== 'ready' && h('div', { className: 'dsc-empty', role: 'status' }, '正在加载会话…'))),
       h('label', { className: 'dsc-archive-toggle' }, h('input', { type: 'checkbox', checked: showArchived, onChange: e => setShowArchived(e.target.checked) }), '显示已归档对话'),
       menu && h(Popover, { anchor: menuAnchor, point: menu.point, onClose: () => setMenu(null), label: '对话菜单', width: 228 },
         h(Option, { title: '重命名', icon: 'pencil', onClick: () => { const target = menu; setMenu(null); hideHover(); setRenaming(target); } }),
