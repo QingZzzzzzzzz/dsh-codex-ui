@@ -54,7 +54,7 @@ for (const version of ['0.2.1-rc.2', '0.2.1-rc.3', '0.2.1-rc.4', '0.2.1-rc.5', '
     assert.equal(a.runtimeVersion, version);
     assert.equal(await realpath(link), await realpath(a.target));
     const patch = parseYaml(await readFile(join(f.profile, 'cordis.patch.yml'), 'utf8'));
-    assert.equal(patch.find(row => row.id === 'ui-skin-codex-style')?.name, manifest.name);
+    assert.equal(patch.find(row => row.id === 'dsh-codex-ui')?.name, manifest.name);
     const b = JSON.parse(f.success()); assert.notEqual(a.target, b.target);
     f.success(b.rollback); assert.equal(await realpath(link), await realpath(a.target));
     f.success(a.rollback); await f.restored(); await assert.rejects(lstat(link), { code: 'ENOENT' });
@@ -67,7 +67,7 @@ for (const patchText of ['  [ ]\r\n', '# keep [] in comment\r\n[] # empty overri
     const text = await readFile(join(f.profile, 'cordis.patch.yml'), 'utf8');
     const rows = parseYaml(text);
     assert.ok(Array.isArray(rows));
-    assert.equal(rows.filter(row => row.id === 'ui-skin-codex-style').length, 1);
+    assert.equal(rows.filter(row => row.id === 'dsh-codex-ui').length, 1);
     for (const row of parseYaml(patchText)) assert.deepEqual(rows.find(item => item.id === row.id), row);
     if (patchText.includes('# keep')) assert.ok(text.includes('# keep [] in comment'));
     f.success(a.rollback); await f.restored();
@@ -216,7 +216,7 @@ for (const disabled of [true, false]) test(`upgrade preserves optional switches 
   const saved = `- id: codex-style-work-guidelines\n  disabled: ${!disabled}\n- id: codex-style-body\n  disabled: ${disabled}\n- id: codex-style-header\n  disabled: ${!disabled}\n- id: codex-style-navigation\n  disabled: ${!disabled}\n- id: codex-style-image-annotations\n  disabled: ${disabled}\n`;
   await writeFile(patch, saved);
   const a = JSON.parse(f.success());
-  for (const file of ['lib/behavior.js', 'prompts/work-guidelines.md', 'locale/behavior/en.json', 'locale/behavior/zh.json', 'lib/body.js', 'locale/body/en.json', 'locale/body/zh.json', 'lib/header.js', 'locale/header/en.json', 'locale/header/zh.json', 'lib/navigation.js', 'locale/navigation/en.json', 'locale/navigation/zh.json', 'lib/skills-host.js', 'lib/image-annotations.js', 'lib/image-annotations-host.js', 'locale/image-annotations/en.json', 'locale/image-annotations/zh.json']) {
+  for (const file of ['lib/navigation.js', 'locale/navigation/en.json', 'locale/navigation/zh.json', 'lib/skills-host.js']) {
     assert.deepEqual(await readFile(join(a.target, file)), await readFile(join(source, file)));
   }
   assert.ok((await readFile(patch, 'utf8')).startsWith(saved));
@@ -226,24 +226,17 @@ for (const disabled of [true, false]) test(`upgrade preserves optional switches 
   assert.equal(await readFile(patch, 'utf8'), saved);
 });
 
-test('bundle exposes no header/body switches, keeps compatibility entries and optional defaults', async () => {
+test('bundle exposes skin and navigation entries with expected defaults and exports', async () => {
   const [{ insert }] = parseYaml(await readFile(join(source, 'cordis.patch.yml'), 'utf8'));
   const defaults = new Map(insert.map(row => [row.id, row]));
-  assert.notEqual(defaults.get('ui-skin-codex-style').disabled, true);
-  assert.equal(defaults.has('codex-style-body'), false);
-  assert.equal(defaults.has('codex-style-header'), false);
-  assert.equal(defaults.get('codex-style-navigation').disabled, false);
-  assert.equal(defaults.get('codex-style-image-annotations').disabled, false);
-  assert.equal(defaults.get('codex-style-work-guidelines').disabled, true);
-  assert.equal(manifest.exports['./body'], './lib/body.js');
-  assert.equal(manifest.exports['./header'], './lib/header.js');
-  assert.equal(manifest.exports['./header/locale/*.json'], './locale/header/*.json');
-  assert.equal(defaults.get('codex-style-navigation').name, manifest.name + '/navigation');
+  assert.deepEqual([...defaults.keys()], ['dsh-codex-ui', 'dsh-codex-ui-navigation']);
+  assert.notEqual(defaults.get('dsh-codex-ui').disabled, true);
+  assert.equal(defaults.get('dsh-codex-ui').name, manifest.name);
+  assert.equal(defaults.get('dsh-codex-ui-navigation').disabled, false);
+  assert.equal(defaults.get('dsh-codex-ui-navigation').name, manifest.name + '/navigation');
   assert.equal(manifest.exports['./navigation'], './lib/navigation.js');
   assert.equal(manifest.exports['./navigation/locale/*.json'], './locale/navigation/*.json');
-  assert.equal(defaults.get('codex-style-image-annotations').name, manifest.name + '/image-annotations');
-  assert.equal(manifest.exports['./image-annotations'], './lib/image-annotations.js');
-  assert.equal(manifest.exports['./image-annotations/locale/*.json'], './locale/image-annotations/*.json');
+  for (const removed of ['./behavior', './body', './header', './image-annotations']) assert.equal(manifest.exports[removed], undefined, removed);
 });
 
 /* ------------------- engines.dsh 范围门禁（与宿主语义对齐） ------------------- */

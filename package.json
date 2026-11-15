@@ -1,5 +1,5 @@
 {
-  "name": "@xinxing1708/dsh-codex-style",
+  "name": "@qinova-ai/dsh-codex-style",
   "version": "0.2.7",
   "description": "随 DSH 深浅色配置切换的 Codex 风格界面插件",
   "type": "module",
@@ -7,33 +7,23 @@
   "exports": {
     ".": "./lib/host.js",
     "./client": "./lib/client.js",
-    "./behavior": "./lib/behavior.js",
-    "./behavior/locale/*.json": "./locale/behavior/*.json",
-    "./body": "./lib/body.js",
-    "./body/locale/*.json": "./locale/body/*.json",
-    "./header": "./lib/header.js",
-    "./header/locale/*.json": "./locale/header/*.json",
     "./navigation": "./lib/navigation.js",
     "./navigation/locale/*.json": "./locale/navigation/*.json",
-    "./image-annotations": "./lib/image-annotations.js",
-    "./image-annotations/locale/*.json": "./locale/image-annotations/*.json",
     "./package.json": "./package.json"
   },
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "node --test scripts/test-install.mjs scripts/test-client.mjs scripts/test-theme.mjs scripts/test-header-tabs.mjs scripts/test-skills.mjs scripts/test-image-annotations.mjs scripts/test-image-annotations-host.mjs scripts/test-image-annotations-integration.mjs scripts/test-navigation.mjs scripts/test-host-signatures.mjs scripts/test-community-environment.mjs scripts/test-retirement.mjs scripts/test-sidebar-pins.mjs scripts/test-sidebar-recents.mjs"
+    "test": "node --test scripts/test-install.mjs scripts/test-client.mjs scripts/test-theme.mjs scripts/test-skills.mjs scripts/test-navigation.mjs scripts/test-host-signatures.mjs scripts/test-community-environment.mjs scripts/test-retirement.mjs scripts/test-sidebar-pins.mjs scripts/test-sidebar-recents.mjs"
   },
   "files": [
     "lib",
     "cordis.patch.yml",
     "skin.json",
-    "prompts",
     "locale",
     "README.md",
     "LICENSE",
     "CHANGELOG.md",
     "THIRD_PARTY_NOTICES.md",
-    "docs/conversation-view-integration.md",
     "install.cmd",
     "scripts/install.mjs",
     "scripts/rollback.mjs",
@@ -65,11 +55,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/xinxing1708/DSH-Codex-Style.git"
+    "url": "git+https://github.com/QingZzzzzzzzz/dsh-codex-ui.git"
   },
-  "homepage": "https://github.com/xinxing1708/DSH-Codex-Style#readme",
+  "homepage": "https://github.com/QingZzzzzzzzz/dsh-codex-ui#readme",
   "bugs": {
-    "url": "https://github.com/xinxing1708/DSH-Codex-Style/issues"
+    "url": "https://github.com/QingZzzzzzzzz/dsh-codex-ui/issues"
   },
   "engines": {
     "node": ">=20",

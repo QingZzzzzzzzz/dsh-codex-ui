@@ -1,5 +1,18 @@
 # 更新记录
 
+## 未发布 · Qinova 重构
+
+本仓库自 `xinxing1708/DSH-Codex-Style` 0.2.7 分叉重构，面向新的发行身份与精简的功能范围：
+
+- **包与组件改名**：npm scope 由 `@xinxing1708` 改为 `@qinova-ai`；组件 `ui-skin-codex-style` 改名 `dsh-codex-ui`，`codex-style-navigation` 改名 `dsh-codex-ui-navigation`；插件详情支持链接指向新仓库。
+- **移除工作规范组件**：删除 `codex-style-work-guidelines` 及其提示词、Host 入口与文案；不再向 systemPrompt 注入内容。
+- **移除图片批注组件**：删除 `codex-style-image-annotations` 及全部预览/批注/手绘代码、Host 服务与测试；图片交互恢复宿主原生界面。
+- **主模块精简**：删除输入区控件（模型选择、推理强度滑条、权限选择器）、正文效果（回合「已处理」、流式平滑）与会话头重绘（视图胶囊、工作区标记、收起态新建键），相应区域回退为宿主原生界面；正文列宽度同步逻辑一并移除。
+- **保留能力**：明暗主题 token、侧栏与导航轨道、「更多」页固定管理、齿轮菜单第三方分组、空态工作区行、技能页、页面前进后退、DSH 本体更新按钮、社区版提醒。
+- **安装器**：安装文件清单同步精简；皮肤配置行同时识别新旧 id（`dsh-codex-ui` 与旧 `ui-skin-codex-style`），便于原地升级。
+- **测试**：删除已移除功能的测试（图片批注、顶部视图胶囊、模型控件），重写呈现组件生命周期测试为仅覆盖前进后退。
+
+
 ## 0.2.7 · 2026-11-15
 
 本版适配 DSH 0.2.2-rc.3，完善导航固定管理并修复工作区和最近列表。
@@ -201,7 +214,7 @@
 
 本版本汇总 **2026 年 10 月 24 日至 25 日（北京时间，跨午夜）** 的更新：合入协作者的 Windows 安装与重命名修复，支持 DSH rc.3，完善会话状态、输入框尺寸和动效，并新增两个默认关闭的可选组件。
 
-适用 **Windows DSH `0.2.1-rc.2` / `0.2.1-rc.3`**，需要 **Node.js 20+**。npm 包为 **`@xinxing1708/dsh-codex-style@0.1.4`**。
+适用 **Windows DSH `0.2.1-rc.2` / `0.2.1-rc.3`**，需要 **Node.js 20+**。npm 包为 **`@qinova-ai/dsh-codex-style@0.1.4`**。
 
 ### 朋友的贡献：@yuehuawu416-cmyk
 
@@ -213,7 +226,7 @@
 
 主要提交：[`3fb57bb`](https://github.com/xinxing1708/DSH-Codex-Style/commit/3fb57bbb5a89d3ce2b2ccb5290dca11d3ee8838b)、[`2e0ed29`](https://github.com/xinxing1708/DSH-Codex-Style/commit/2e0ed290a44b6d7c88fb70e93d5af51741be9d64)、[`532b76d`](https://github.com/xinxing1708/DSH-Codex-Style/commit/532b76d235ce432a9b21855f2d9f4d89448c2010)。实机记录见 [协作者测试说明](https://github.com/xinxing1708/DSH-Codex-Style/blob/v0.1.4/docs/testing/2026-10-24/README.md)；该记录覆盖当时的 0.1.3 基线和 PR 修复。
 
-### 作者的贡献：@xinxing1708
+### 作者的贡献：@qinova-ai
 
 #### 宿主适配、导航与权限
 
@@ -251,10 +264,10 @@
 ### 下载与安装
 
 - **Windows 用户**：下载本页的 `dsh-codex-style-0.1.4-windows.zip`，退出 DSH，解压后双击 `install.cmd`。已有本项目脚本安装可用同一方式升级，安装器保留旧版和回退入口。
-- **npm / DSH 插件管理器**：使用完整包名 `@xinxing1708/dsh-codex-style`。也可在 PowerShell 执行：
+- **npm / DSH 插件管理器**：使用完整包名 `@qinova-ai/dsh-codex-style`。也可在 PowerShell 执行：
 
   ```powershell
-  npm pack @xinxing1708/dsh-codex-style@0.1.4 --registry=https://registry.npmjs.org
+  npm pack @qinova-ai/dsh-codex-style@0.1.4 --registry=https://registry.npmjs.org
   tar -xf xinxing1708-dsh-codex-style-0.1.4.tgz
   cd package
   node scripts/install.mjs
@@ -277,7 +290,7 @@
 
 ## 0.1.2 · 2026-10-24
 
-- npm 身份改为 `@xinxing1708/dsh-codex-style`，避免与第三方同名包冲突；显示名与仓库名可保留大小写。
+- npm 身份改为 `@qinova-ai/dsh-codex-style`，避免与第三方同名包冲突；显示名与仓库名可保留大小写。
 - 本插件详情页「卸载」左侧新增真实「检查更新」按钮，复用公开 `plugins.detail.actions` 槽位及宿主按钮。
 - 版本查询支持两个中国镜像与 npm 官方源，显示检查中、新版、最新版、未发布和失败状态；只查询、不自动安装。
 - 安装器支持受管理的旧本地包名迁移至 scoped 包名，保留原链接和配置回退。

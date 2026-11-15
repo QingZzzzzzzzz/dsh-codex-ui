@@ -1,6 +1,0 @@
-{
-  "meta": {
-    "title": "Codex body effects (legacy compatibility entry)",
-    "description": "Body effects are built into the Codex UI and follow its lifecycle, with no separate switch. This empty entry preserves legacy references; toggling it no longer changes body effects."
-  }
-}

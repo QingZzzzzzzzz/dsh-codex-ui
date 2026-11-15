@@ -1,12 +1,6 @@
 - insert:
-    - id: ui-skin-codex-style
-      name: '@xinxing1708/dsh-codex-style'
-    - id: codex-style-work-guidelines
-      name: '@xinxing1708/dsh-codex-style/behavior'
-      disabled: true
-    - id: codex-style-navigation
-      name: '@xinxing1708/dsh-codex-style/navigation'
-      disabled: false
-    - id: codex-style-image-annotations
-      name: '@xinxing1708/dsh-codex-style/image-annotations'
+    - id: dsh-codex-ui
+      name: '@qinova-ai/dsh-codex-style'
+    - id: dsh-codex-ui-navigation
+      name: '@qinova-ai/dsh-codex-style/navigation'
       disabled: false

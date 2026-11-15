@@ -32,7 +32,7 @@ test('host half registers no update service and imports no retired module', asyn
   const source = await read('lib/host.js');
   for (const marker of ['codexStyleUpdates', 'PluginUpdater', 'HostInstaller', 'update-install', 'update-host-install', 'update-common']) assert.equal(source.includes(marker), false, marker);
   const host = await import(new URL('../lib/host.js', import.meta.url));
-  assert.equal(host.name, 'codex-style');
+  assert.equal(host.name, 'dsh-codex-ui');
   assert.deepEqual(host.inject, ['profileContext']);
   assert.equal(host.apply.toString().includes('codexStyleUpdates'), false);
 });

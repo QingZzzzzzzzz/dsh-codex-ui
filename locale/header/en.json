@@ -1,6 +1,0 @@
-{
-  "meta": {
-    "title": "Codex header layout (legacy compatibility entry)",
-    "description": "Header layout is built into the Codex UI and follows its lifecycle, with no separate switch. This empty entry preserves legacy references; toggling it no longer changes header layout or view styling."
-  }
-}
