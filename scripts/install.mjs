@@ -243,7 +243,8 @@ const patch = ownBlocks.length ? patchBefore.replace(ownBlock, block => {
   const nameLine = /^  name: (.+)$/m;
   const oldName = block.match(nameLine)?.[1].trim().replace(/^(['"])(.*)\1$/, '$2');
   if (oldName !== manifest.name && oldName !== previousName) throw new Error('皮肤配置指向其他包，未改 profile。');
-  return block.replace(nameLine, () => '  name: ' + JSON.stringify(manifest.name));
+  // 旧版皮肤的 id 是 ui-skin-codex-style，重构后组件 id 为 dsh-codex-ui；升级时一并迁移 id。
+  return block.replace(/^- id: ui-skin-codex-style$/m, '- id: dsh-codex-ui').replace(nameLine, () => '  name: ' + JSON.stringify(manifest.name));
 }) : patchPrefix + eol + [
   '# Codex Style：旧主题依赖保留，仅停用其界面行。',
   '- id: ui-skin-claude-style',
