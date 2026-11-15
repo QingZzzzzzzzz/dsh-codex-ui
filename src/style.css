@@ -7,15 +7,10 @@ body[data-dsh-codex-chrome] [data-dsc-frame] { margin-left: var(--cx-rail-w); wi
 html[data-windows-titlebar] body[data-dsh-codex-chrome] [data-dsc-frame] [data-sidebar-right-panel="fullscreen"] { max-width: max(0px, calc(100vw - var(--cx-rail-w) - var(--dsh-windows-sidebar-width, 0px))); }
 /* data-slot 与公开 data-* 标记作为外观边界；编辑器、输入状态和动作仍由宿主持有。 */
 /* 正文字体颜色：第 134 轮按新版 Codex 默认主题取 #fcfcfc（原 #dfdfdf 偏暗）。仅覆盖对话内容区，不影响按钮、菜单等其它主文本。 */
-body[data-dsh-codex-style] [data-conversation-content] { --dsw-alias-label-primary: #fcfcfc; --dsw-alias-link: var(--cx-link); }
 /* 正文列随输入卡宽度对齐，隐藏宿主两侧的宽度拖拽柄及其整条命中区域。 */
-body[data-dsh-codex-style] [data-conversation-content] > [data-width-handle] { display: none; }
 /* 原 sidebar/settings 父级继续挂载以保留原生页面与子槽位所有权；只隐藏其旧外观。 */
 body[data-dsh-codex-chrome] [data-slot="sidebar"] { display: block !important; position: relative; width: 100%; height: 100%; visibility: hidden; }
-body[data-dsh-codex-chrome] [data-slot="conversation.composer.bar"] { --dsh-composer-side-clearance: 0px; display: flex !important; flex-direction: column; align-items: stretch; align-self: center; width: min(calc(100% - 32px), var(--dsh-composer-card-max-width)); max-width: var(--dsh-composer-card-max-width); position: relative; }
-body[data-dsh-codex-chrome] [data-conversation-region="composer"] :has(> [data-slot="conversation.composer.bar"]) { width: 100%; align-self: stretch; padding-bottom: 0; gap: 0; }
 /* 两侧等量保留原生滚动条空间，使空态与会话中的输入卡共用同一中线。 */
-body[data-dsh-codex-chrome] [data-conversation-content] > [data-conversation-scroll] { scrollbar-gutter: stable both-edges; margin-right: 0; }
 
 .dsc-ui { color: var(--cx-text); box-sizing: border-box; }
 .dsc-ui *, .dsc-ui *::before, .dsc-ui *::after { box-sizing: border-box; }
