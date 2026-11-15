@@ -313,6 +313,7 @@ function makeNavigationRail(ctx, sidebar) {
         pluginRows.length > 0 && item('plugins', '自定义', 'plugins', () => pick(pluginRows.some(row => row.id === 'plugins') ? 'plugins' : SKILLS_PANEL_ID), category === 'skills'),
         hasMore && item('more', '更多', 'more', openMore),
         h('div', { ref: extensions, className: 'dsc-extension-navigation-anchor', 'aria-hidden': true }),
+        h('button', { type: 'button', className: 'dsc-rail__item', 'aria-label': '账号', title: collapsed ? undefined : '账号', 'data-tip': '账号', onClick: () => { const gear = typeof document !== 'undefined' && document.querySelector('.dsc-gear-button'); if (gear) gear.click(); } }, h(IconUserOutlineRegular, { size: 18 })),
         h('span', { className: 'dsc-rail-hitblock', 'aria-hidden': true })),
       error && h('div', { className: 'dsc-ui dsc-navigation-error' }, h(ErrorLine, { text: error })),
       h(SidebarPinContextMenu, { sidebar })), document.body);

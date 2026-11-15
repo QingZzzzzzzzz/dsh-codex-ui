@@ -123,7 +123,7 @@ function renderedFixture() {
     useSyncExternalStore: (_, read) => read(), useRef: value => ({ current: value }), useState: value => [value, () => {}],
     useEffect() {}, useLayoutEffect() {}, document: { body: {} }, window: { innerWidth: 1200 },
     createSnapshotStore: snapshot, createSessionCompletionTracker: () => ({ start() {}, store: snapshot({}) }),
-    makeWorkspaceTree: () => 'Tree', Icon: 'Icon', ErrorLine: 'ErrorLine', SidebarPinContextMenu: 'PinMenu',
+    makeWorkspaceTree: () => 'Tree', Icon: 'Icon', ErrorLine: 'ErrorLine', SidebarPinContextMenu: 'PinMenu', IconUserOutlineRegular: () => null,
     SKILLS_PANEL_ID: 'codex-style-skills', BRAND_MARK: '', errorText: String
   });
   const all = (node, predicate) => !node || typeof node !== 'object' ? [] : [
