@@ -6,37 +6,6 @@ body[data-dsh-codex-chrome] [data-dsc-frame] { margin-left: var(--cx-rail-w); wi
 /* 全屏右栏原本按 100vw 展开；扣掉独立导航后，继续尊重宿主二级侧栏的真实宽度。 */
 html[data-windows-titlebar] body[data-dsh-codex-chrome] [data-dsc-frame] [data-sidebar-right-panel="fullscreen"] { max-width: max(0px, calc(100vw - var(--cx-rail-w) - var(--dsh-windows-sidebar-width, 0px))); }
 /* data-slot 与公开 data-* 标记作为外观边界；编辑器、输入状态和动作仍由宿主持有。 */
-body[data-dsh-codex-style] [data-slot="conversation.composer.bar"] { --dsw-specific-input-major: var(--cx-composer-fill); --dsw-radius-panel: var(--cx-radius-composer); --dsw-alias-border-l2: var(--cx-border-strong); --dsw-elevation-soft: var(--cx-composer-shadow); --dsh-composer-card-max-width: calc(var(--cx-composer-stack-w) - 32px); }
-/* 单行卡片按截图为 736×98；输入区保留自然增高，发送/停止不改变工具行高度。 */
-body[data-dsh-codex-style] [data-slot="conversation.composer.bar"] > :has(> [data-composer-card]) { width: 100%; padding: 0; }
-body[data-dsh-codex-style] [data-slot="conversation.composer.bar"] [data-composer-card] { min-height: var(--cx-composer-h); }
-body[data-dsh-codex-style] [data-slot="conversation.composer.bar"] [data-composer-input] { min-height: 42px; padding-left: 12px; }
-body[data-dsh-codex-style] [data-slot="conversation.composer.bar"] [data-composer-placeholder] { left: 12px; }
-body[data-dsh-codex-style] [data-slot="conversation.composer.bar"] [data-composer-dock] { display: flex; box-sizing: border-box; min-height: 20px; padding-top: 2px; }
-/* “+”沿用原生命令入口；悬停圆底与提示颜色按用户 Codex 截图校准。 */
-body[data-dsh-codex-style] [data-slot="conversation.composer.bar"] [data-composer-card] button[aria-haspopup="listbox"]:hover:not(:disabled) { background: #454545; }
-body[data-dsh-codex-style]:has([data-slot="conversation.composer.bar"] [data-composer-card] button[aria-haspopup="listbox"]:is(:hover,:focus-visible):not(:disabled)) [role="tooltip"] { background: #2d2d2d; color: #dfdfdf; }
-/* 顶部工作区/模式只改触发器轮廓，菜单和宿主动作继续沿用。 */
-body[data-dsh-codex-style] :is([data-slot="conversation.hero.workspace"],[data-slot="conversation.hero.agentPreset"]) button { border-radius: 999px; corner-shape: round; }
-/* 所有提交状态共享占位；保留原提交/中断回调、Tooltip 和快捷键。 */
-body[data-dsh-codex-style] [data-slot="conversation.composer.bar"] [data-composer-card] button:is([aria-label="发送消息"], [aria-label="排队发送"], [aria-label="插话发送"], [aria-label="Send message"], [aria-label="Queue message"], [aria-label="Steer message"], [aria-label="停止生成"], [aria-label="Stop generating"], [data-sending]) { box-sizing: border-box; flex: none; display: grid; place-items: center; width: 28px; height: 28px; min-width: 0; padding: 0; }
-body[data-dsh-codex-style] [data-slot="conversation.composer.bar"] [data-composer-card] button:is([aria-label="发送消息"], [aria-label="排队发送"], [aria-label="插话发送"], [aria-label="Send message"], [aria-label="Queue message"], [aria-label="Steer message"], [aria-label="停止生成"], [aria-label="Stop generating"], [data-sending]) svg { width: 14px; height: 14px; }
-/* 中英文发送标签；保留宿主提交与禁用状态。 */
-body[data-dsh-codex-style] [data-slot="conversation.composer.bar"] [data-composer-card] button:is([aria-label="发送消息"], [aria-label="排队发送"], [aria-label="插话发送"], [aria-label="Send message"], [aria-label="Queue message"], [aria-label="Steer message"]) { --dsw-alias-button-info-fill: #dfdfdf; --dsw-alias-button-info-hover: #dfdfdf; color: #363636; opacity: 1; }
-body[data-dsh-codex-style] [data-slot="conversation.composer.bar"] [data-composer-card] button:is([aria-label="发送消息"], [aria-label="排队发送"], [aria-label="插话发送"], [aria-label="Send message"], [aria-label="Queue message"], [aria-label="Steer message"]):disabled { --dsw-alias-button-info-fill: #8b8b8b; }
-/* 停止生成复用宿主按钮与中断动作；普通态、悬停态均为参考图的浅灰圆底和深灰方块。 */
-body[data-dsh-codex-style] [data-slot="conversation.composer.bar"] [data-composer-card] button:is([aria-label="停止生成"], [aria-label="Stop generating"]) { --dsw-alias-button-info-fill: #dfdfdf; --dsw-alias-button-info-hover: #dfdfdf; color: #2d2d2d; }
-body[data-dsh-codex-style] [data-slot="conversation.composer.bar"] [data-composer-card] button:is([aria-label="停止生成"], [aria-label="Stop generating"]) svg rect { rx: 1.5px; }
-/* 新版宿主在提交窗口把按钮换成 34px 蓝底 + data-sending；这里统一为发送/停止的 28px 灰底，环由伪元素绘制，宿主 disabled/Tooltip/回调保持。 */
-body[data-dsh-codex-style] [data-slot="conversation.composer.bar"] [data-composer-card] button[data-sending] { position: relative; --dsw-alias-button-info-fill: #dfdfdf; --dsw-alias-button-info-hover: #dfdfdf; background: #dfdfdf; color: #363636; opacity: 1; }
-/* 隐藏宿主 16px 白色环并停掉它自己的 .8s 动画，避免与下方 1.7s 灰环双转。 */
-body[data-dsh-codex-style] [data-slot="conversation.composer.bar"] [data-composer-card] button[data-sending] > svg { visibility: hidden; animation: none; }
-/* 14px 槽位内 12px 外径、1.5px 线宽；360° 连续深浅灰渐变环，顺时针 1.7s。 */
-body[data-dsh-codex-style] [data-slot="conversation.composer.bar"] [data-composer-card] button[data-sending]::before { content: ""; position: absolute; inset: 0; margin: auto; width: 12px; height: 12px; border-radius: 50%; pointer-events: none; background: conic-gradient(from 0deg, #b8b8b8 0deg, #363636 270deg 360deg); -webkit-mask: radial-gradient(circle closest-side, transparent calc(100% - 1.5px), #000 calc(100% - 1.5px)); mask: radial-gradient(circle closest-side, transparent calc(100% - 1.5px), #000 calc(100% - 1.5px)); animation: dsc-composer-sending-spin 1.7s linear infinite; }
-@media (prefers-reduced-motion: reduce) {
-  body[data-dsh-codex-style] [data-slot="conversation.composer.bar"] [data-composer-card] button[data-sending]::before { animation: none; }
-}
-@keyframes dsc-composer-sending-spin { to { transform: rotate(360deg); } }
 /* 正文字体颜色：第 134 轮按新版 Codex 默认主题取 #fcfcfc（原 #dfdfdf 偏暗）。仅覆盖对话内容区，不影响按钮、菜单等其它主文本。 */
 body[data-dsh-codex-style] [data-conversation-content] { --dsw-alias-label-primary: #fcfcfc; --dsw-alias-link: var(--cx-link); }
 /* 正文列随输入卡宽度对齐，隐藏宿主两侧的宽度拖拽柄及其整条命中区域。 */
@@ -47,39 +16,6 @@ body[data-dsh-codex-chrome] [data-slot="conversation.composer.bar"] { --dsh-comp
 body[data-dsh-codex-chrome] [data-conversation-region="composer"] :has(> [data-slot="conversation.composer.bar"]) { width: 100%; align-self: stretch; padding-bottom: 0; gap: 0; }
 /* 两侧等量保留原生滚动条空间，使空态与会话中的输入卡共用同一中线。 */
 body[data-dsh-codex-chrome] [data-conversation-content] > [data-conversation-scroll] { scrollbar-gutter: stable both-edges; margin-right: 0; }
-/* 空态保留官方编辑器、草稿、附件、“+”与 chain；没有重建输入状态或移动节点。 */
-body[data-dsh-codex-chrome] [data-conversation-content][data-content-phase="hero"] { visibility: hidden; }
-body[data-dsh-codex-chrome] [data-conversation-content][data-content-phase="hero"] [data-conversation-region="composer"] { position: absolute; inset: auto var(--dsh-scrollbar-width, 15px) 0; z-index: 7; }
-body[data-dsh-codex-chrome] [data-conversation-content][data-content-phase="hero"] [data-slot="conversation.composer.bar"],
-body[data-dsh-codex-chrome] [data-conversation-content][data-content-phase="hero"] [data-slot="conversation.input.dock"],
-body[data-dsh-codex-chrome] [data-conversation-content][data-content-phase="hero"] [data-conversation-composer-overlay] { visibility: visible; }
-/* 工作区、助手及第三方选项沿用宿主同一行，在输入卡上方自然占位。 */
-body[data-dsh-codex-chrome] [data-dsc-hero-workspace-row] { visibility: visible; box-sizing: border-box; flex-wrap: wrap; gap: 4px; align-self: center; width: min(calc(100% - 32px), calc(var(--cx-composer-stack-w) - 32px)); margin: 4px auto 8px; padding: 0 8px; }
-body[data-dsh-codex-chrome] [data-dsc-hero-workspace-row] [data-slot="conversation.hero.agentPreset"] { display: inline-flex; min-width: 0; max-width: 100%; }
-body[data-dsh-codex-chrome] [data-dsc-hero-workspace-trigger] { flex: 0 1 auto; min-width: 0; max-width: 100%; min-height: 28px; border-radius: var(--cx-radius-full); corner-shape: round; color: var(--cx-text-2); font-size: 13px; }
-body[data-dsh-codex-chrome] [data-dsc-hero-workspace-trigger]:hover, body[data-dsh-codex-chrome] [data-dsc-hero-workspace-trigger][aria-expanded=true] { background: var(--cx-active); }
-/* 保留 Codex 工作区背板；正常占位的行负责布局，背景延伸到输入卡后且不拦截点击。 */
-body[data-dsh-codex-chrome] [data-dsc-hero-workspace-row] {
-  position: relative;
-  z-index: 0;
-  isolation: isolate;
-  width: min(calc(100% - 58px), calc(var(--cx-composer-stack-w) - 58px));
-  min-height: 38px;
-  margin: 4px auto 0;
-  padding: 4px;
-}
-body[data-dsh-codex-chrome] [data-dsc-hero-workspace-row]::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 calc(-1 * var(--cx-radius-composer));
-  z-index: -1;
-  border-radius: 20px;
-  background: var(--cx-picker-fill);
-  pointer-events: none;
-}
-body[data-dsh-codex-chrome] [data-conversation-content][data-content-phase="hero"] [data-slot="conversation.composer.bar"] {
-  z-index: 1;
-}
 
 .dsc-ui { font: 14px/22px var(--cx-font-sans); color: var(--cx-text); box-sizing: border-box; }
 .dsc-ui *, .dsc-ui *::before, .dsc-ui *::after { box-sizing: border-box; }
@@ -96,10 +32,6 @@ body[data-dsh-codex-chrome] [data-conversation-content][data-content-phase="hero
 .dsc-update-progress-label { min-width: 34px; color: var(--cx-text-2); font-size: 12px; font-variant-numeric: tabular-nums; }
 @keyframes dsc-update-download { from { transform: translateX(-110%); } to { transform: translateX(410%); } }
 .dsc-update-notice { position: fixed; right: 24px; bottom: 24px; width: 320px; max-width: calc(100vw - 32px); padding: 14px; z-index: 10000; background: var(--cx-popover-fill); border: 1px solid var(--cx-border-l1); border-radius: 14px; box-shadow: 0 12px 36px #0007; animation: dsc-pop-in 130ms ease both; -webkit-app-region: no-drag; }
-/* 社区版运行提醒：固定右下角，位于更新通知之上；窄窗不超出视口，复用弹层与文本 token。 */
-.dsc-community-notice { position: fixed; right: 24px; bottom: 24px; z-index: 10001; box-sizing: border-box; width: max-content; max-width: min(420px, calc(100vw - 48px)); padding: 12px 16px; border: 1px solid var(--cx-border-l1); border-radius: 14px; background: var(--cx-popover-fill); color: var(--cx-text); font-size: 13px; line-height: 20px; box-shadow: var(--cx-shadow-2xl); animation: dsc-pop-in 130ms ease both; -webkit-app-region: no-drag; }
-.dsc-community-notice-text { display: block; }
-@media (prefers-reduced-motion: reduce) { .dsc-community-notice { animation: none; } }
 /* 归档成功提示：顶部居中；入场 160ms，退场 1000ms（与 client.js ARCHIVE_NOTICE_FADE_MS 对应）。 */
 .dsc-ui.dsc-archive-notice { position: fixed; top: 40px; left: 50%; z-index: 10001; display: flex; align-items: center; gap: 8px; width: max-content; max-width: calc(100vw - 32px); padding: 7px 8px 7px 12px; border: 1px solid var(--cx-border-l1); border-radius: var(--cx-radius-lg); background: var(--cx-popover-fill); color: var(--cx-text); font-size: 13px; line-height: 18px; box-shadow: var(--cx-shadow-2xl); transform: translate(-50%, 0); animation: dsc-archive-notice-in 160ms ease both; -webkit-app-region: no-drag; }
 .dsc-ui.dsc-archive-notice[data-phase=leaving] { animation: dsc-archive-notice-out 1000ms ease both; }
@@ -179,14 +111,7 @@ body[data-dsh-codex-chrome] [data-dsc-extension-nav] [data-dsc-extension-glyph] 
 .dsc-rail__item[data-dsc-preview-trigger=more]:focus-visible::after { opacity: 1; transform: translateY(-50%) translateX(0); }
 .dsc-sidebar { flex: 1; min-width: 0; min-height: 0; overflow: hidden; }
 .dsc-sidebar .dsc-sidebar__header { flex: none; }
-.dsc-sidebar .dsc-brand { min-width: 0; gap: 6px; }
-.dsc-sidebar .dsc-brand__mark { height: 19px; max-width: 25px; }
-.dsc-sidebar .dsc-brand__badge { font-size: 8px; padding: 3px 4px 2px; }
 .dsc-sidebar .dsc-sidebar__header-actions { margin-left: auto; }
-/* 用户截图灰度：品牌字标与徽章浅底压低亮度，鲸鱼标识仅以透明度匹配；不改全局正文。 */
-.dsc-sidebar .dsc-brand__mark { opacity: .72; }
-.dsc-sidebar .dsc-brand__wordmark { color: var(--cx-sidebar-text); }
-.dsc-sidebar .dsc-brand__badge { background: #b8b8b8; }
 /* Codex：新聊天默认无底色、不显示快捷键，仅悬停时出现灰色背景。 */
 .dsc-sidebar .dsc-new-chat { flex: none; justify-content: flex-start; width: 100%; font-size: 13px; font-weight: var(--cx-weight-medium); background: transparent; color: var(--cx-sidebar-text); margin-bottom: 8px; }
 .dsc-sidebar .dsc-new-chat:hover { background: rgba(255,255,255,.08); }
@@ -309,13 +234,6 @@ body[data-dsh-codex-chrome] .dsc-independent-rail[data-dsc-app-footer-clear] { p
 body[data-dsh-codex-chrome] .dsc-independent-rail[data-dsc-app-footer-clear] .dsc-rail-hitblock { display: block; clip-path: inset(0 0 calc(100% - var(--dsc-app-footer-clear-top, 100%)) 0); }
 body[data-dsh-codex-chrome] .dsc-independent-rail[data-dsc-app-footer-clear] .dsc-rail__item { position: relative; z-index: 1; pointer-events: auto; }
 body[data-dsh-codex-chrome] .dsc-independent-rail [data-dsc-app-footer-clear-item] { opacity: 0 !important; pointer-events: none !important; }
-.dsc-empty-hero { visibility: visible; position: fixed; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 24px; transform: translate(-50%,-50%); pointer-events: none; }
-.dsc-empty-hero svg { color: #525252; }
-.dsc-empty-hero h1 { font-size: 26px; line-height: 34px; font-weight: 400; color: var(--cx-text-2); margin: 0; white-space: nowrap; }
-.dsc-brand-mark { width: 25px; height: 20px; object-fit: contain; }
-.dsc-brand { display: inline-flex; align-items: center; gap: 7px; }
-.dsc-brand strong { font-size: 17px; letter-spacing: -.02em; }
-.dsc-brand small { font: 700 8px/16px var(--cx-font-sans); letter-spacing: .12em; padding: 0 4px; color: #131313; background: #eee; border-radius: 3px; }
 .dsc-settings-trigger { display: inline-flex; gap: 8px; align-items: center; }
 .dsc-workspaces { height: 100%; min-height: 0; width: 100%; display: flex; flex-direction: column; background: var(--cx-sidebar); }
 .dsc-tree-tools { display: flex; gap: 4px; align-items: center; padding: 6px 8px 12px; }
@@ -507,13 +425,6 @@ body[data-dsh-codex-chrome] .dsc-independent-rail [data-dsc-app-footer-clear-ite
 }
 
 /* Codex 几何（第 48 轮）：侧边栏列左上角圆角、对话列左上角直角（与 Codex 蓝框/红框一致）。 */
-/* 公开详情插槽在来源信息后声明；仅在本插件详情用 flex 顺序把来源信息排在支持提示之后。 */
-body[data-dsh-codex-style] [data-plugin-detail="@qinova-ai/dsh-codex-style"] [data-plugin-source] { order: 1; }
-.dsc-plugin-support { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 16px 0; color: #989898; font-size: 13px; line-height: 20px; }
-.dsc-plugin-support p { margin: 0; }
-.dsc-plugin-support a { display: inline-flex; align-items: center; gap: 4px; max-width: 100%; color: #9bc8f8; text-decoration: none; overflow-wrap: anywhere; border-radius: 4px; }
-.dsc-plugin-support a:hover { text-decoration: underline; text-underline-offset: 3px; }
-.dsc-plugin-support a:focus-visible { outline: 2px solid #9bc8f8; outline-offset: 4px; }
 /* BOUNDARY-20261106：导航右侧的单一外框。
    1) 常驻 frame 上一个不占位、不可拦截指针的伪元素描边；顶部从 40px 标题栏下沿开始，
       经侧栏左上真圆弧连续走到右侧与下沿，外侧底色仍是 frame 的 #0f0f0f。
@@ -559,22 +470,12 @@ body[data-dsh-codex-style][data-dsc-color-scheme="light"] {
   --shiki-token-function: #7651b4;
 }
 body[data-dsh-codex-style][data-dsc-color-scheme="light"] [data-conversation-content] { --dsw-alias-label-primary: var(--cx-text); }
-body[data-dsh-codex-style][data-dsc-color-scheme="light"] [data-slot="conversation.composer.bar"] [data-composer-card] button[aria-haspopup="listbox"]:hover:not(:disabled) { background: #eee; }
-body[data-dsh-codex-style][data-dsc-color-scheme="light"] [data-slot="conversation.composer.bar"] [data-composer-card] button:is([aria-label="发送消息"], [aria-label="排队发送"], [aria-label="插话发送"], [aria-label="Send message"], [aria-label="Queue message"], [aria-label="Steer message"], [aria-label="停止生成"], [aria-label="Stop generating"], [data-sending]) { --dsw-alias-button-info-fill: #0d0d0d; --dsw-alias-button-info-hover: #252525; color: #fff; }
-body[data-dsh-codex-style][data-dsc-color-scheme="light"] [data-slot="conversation.composer.bar"] [data-composer-card] button:is([aria-label="发送消息"], [aria-label="排队发送"], [aria-label="插话发送"], [aria-label="Send message"], [aria-label="Queue message"], [aria-label="Steer message"]):disabled { --dsw-alias-button-info-fill: #b6b6b6; }
-body[data-dsh-codex-style][data-dsc-color-scheme="light"] [data-slot="conversation.composer.bar"] [data-composer-card] button[data-sending] { background: #0d0d0d; }
-body[data-dsh-codex-style][data-dsc-color-scheme="light"] [data-slot="conversation.composer.bar"] [data-composer-card] button[data-sending]::before { background: conic-gradient(from 0deg, #fff 0deg, #777 270deg 360deg); }
 body[data-dsh-codex-style][data-dsc-color-scheme="light"] .dsc-sidebar-shell[data-mode=floating] > .dsc-sidebar { --cx-sidebar: #fff; box-shadow: 0 0 0 3px #f3f3f380, 0 8px 28px #0002; }
 body[data-dsh-codex-style][data-dsc-color-scheme="light"] :is([data-dsc-extension-nav], .dsc-sidebar .dsc-tree-scroll, [data-dsc-app-footer-host]) { scrollbar-color: #00000026 transparent; }
 body[data-dsh-codex-style][data-dsc-color-scheme="light"] :is(.dsc-sidebar .dsc-new-chat:hover, .dsc-thread:hover, .dsc-project:hover, .dsc-ui .dsc-project-more:hover, .dsc-ui .dsc-project-more:focus-visible) { background: #0000000d; }
 body[data-dsh-codex-style][data-dsc-color-scheme="light"] .dsc-thread.is-active { background: var(--cx-sidebar-selected); }
-body[data-dsh-codex-style][data-dsc-color-scheme="light"] .dsc-sidebar .dsc-brand__badge { background: #303030; color: #fff; }
-/* 只调整单色品牌字形，不影响附件和正文图片。 */
-body[data-dsh-codex-style][data-dsc-color-scheme="light"] .dsc-brand__mark { filter: brightness(0); }
 body[data-dsh-codex-style][data-dsc-color-scheme="light"] .dsc-more-page { background: #fff; }
-body[data-dsh-codex-style][data-dsc-color-scheme="light"] .dsc-empty-hero svg { color: #bababa; }
 body[data-dsh-codex-style][data-dsc-color-scheme="light"] .dsc-search { background: #00000005; }
-body[data-dsh-codex-style][data-dsc-color-scheme="light"] .dsc-brand small { color: #fff; background: #303030; }
 body[data-dsh-codex-style][data-dsc-color-scheme="light"] .dsc-menu { box-shadow: 0 8px 24px #0000001a; }
 body[data-dsh-codex-style][data-dsc-color-scheme="light"] :is(.dsc-option:hover, .dsc-option:focus-visible) { background: #00000009; }
 body[data-dsh-codex-style][data-dsc-color-scheme="light"] :is(.dsc-pill:hover, .dsc-pill[aria-expanded=true]) { background: #0000000a; color: #0d0d0d; }
@@ -590,9 +491,6 @@ body[data-dsh-codex-style][data-dsc-color-scheme="light"] :is(.dsc-modal__save, 
 body[data-dsh-codex-style][data-dsc-color-scheme="light"] :is(.dsc-modal__save:hover:not(:disabled), .dsc-modal__panel[aria-labelledby="dsc-edit-workspace-title"] .dsc-modal__save:hover:not(:disabled)) { background: #303030; color: #fff; }
 body[data-dsh-codex-style][data-dsc-color-scheme="light"] :is(.dsc-modal__remove, .dsc-modal__panel[aria-labelledby="dsc-edit-workspace-title"] .dsc-modal__remove) { background: #c9363412; color: #c93634; }
 body[data-dsh-codex-style][data-dsc-color-scheme="light"] :is(.dsc-modal__remove:hover:not(:disabled), .dsc-modal__panel[aria-labelledby="dsc-edit-workspace-title"] .dsc-modal__remove:hover:not(:disabled)) { background: #c9363422; }
-body[data-dsh-codex-style][data-dsc-color-scheme="light"] .dsc-plugin-support { color: #898989; }
-body[data-dsh-codex-style][data-dsc-color-scheme="light"] .dsc-plugin-support a { color: var(--cx-link); }
-body[data-dsh-codex-style][data-dsc-color-scheme="light"] .dsc-plugin-support a:focus-visible { outline-color: var(--cx-focus); }
 body[data-dsh-codex-style][data-dsc-color-scheme="light"] .dsc-update-progress { background: #0000001f; }
 body[data-dsh-codex-style][data-dsc-color-scheme="light"] :is(.dsc-update-progress-fill, .dsc-thread-completion) { background: var(--cx-accent); }
 body[data-dsh-codex-style][data-dsc-color-scheme="light"] .dsc-update-message[data-state=update] { color: var(--cx-accent); }
@@ -600,4 +498,3 @@ body[data-dsh-codex-style][data-dsc-color-scheme="light"] .dsc-update-message[da
 body[data-dsh-codex-style][data-dsc-color-scheme="light"] :is([role="tooltip"], .dsc-row-tooltip, .dsc-desktop-update-tip),
 body[data-dsh-codex-style][data-dsc-color-scheme="light"] .dsc-gear-button::after { background: #0d0d0d; color: #fff; border-color: #ffffff14; }
 body[data-dsh-codex-style][data-dsc-color-scheme="light"] .dsc-desktop-update-tip strong { color: #fff; }
-body[data-dsh-codex-style][data-dsc-color-scheme="light"]:has([data-slot="conversation.composer.bar"] [data-composer-card] button[aria-haspopup="listbox"]:is(:hover,:focus-visible):not(:disabled)) [role="tooltip"] { background: #0d0d0d; color: #fff; }

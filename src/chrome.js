@@ -406,7 +406,7 @@ function makeSidebarChrome(ctx, sidebar, archiveNotice) {
       onKeyDown: e => { if (collapsed && e.key === 'Escape' && !e.defaultPrevented) { sidebar.hide(); e.preventDefault(); } }
     },
       h('aside', { key: category, className: 'dsc-sidebar', 'aria-label': category === 'home' ? '项目与对话' : category === 'tasks' ? '定时任务' : category === 'more' ? '更多' : category === 'skills' ? '技能' : '自定义' },
-        h('div', { className: 'dsc-sidebar__header' }, category === 'home' ? h('div', { className: 'dsc-brand' }, h('img', { className: 'dsc-brand__mark', src: BRAND_MARK, alt: '' }), h('span', { className: 'dsc-brand__wordmark' }, 'deepseek'), h('span', { className: 'dsc-brand__badge' }, 'HARNESS')) : h('strong', { className: 'dsc-section-page-title' }, category === 'tasks' ? '定时任务' : category === 'more' ? '更多' : '自定义'),
+        h('div', { className: 'dsc-sidebar__header' }, h('strong', { className: 'dsc-section-page-title' }, category === 'home' ? '项目与对话' : category === 'tasks' ? '定时任务' : category === 'more' ? '更多' : '自定义'),
           h('div', { className: 'dsc-sidebar__header-actions' }, h('button', { type: 'button', ref: searchAnchor, className: 'dsc-icon-button', title: '搜索对话与项目', 'aria-label': '搜索对话与项目', 'aria-expanded': searchOpen, onClick: openSearch }, h(Icon, { name: 'search' })))),
         category === 'home' && h('button', { type: 'button', className: 'dsc-new-chat', title: '新聊天', onClick: () => { setSearchOpen(false); setQuery(''); run(() => { ctx.uiWorkspace.startSession(); sidebar.hide(); }); } }, h(PrototypeIcon, { name: 'newChat' }), h('span', null, '新聊天')),
         category === 'home' && searchOpen && h('label', { className: 'dsc-search dsc-sidebar-search' }, h(Icon, { name: 'search' }), h('input', { ref: search, value: query, onChange: e => setQuery(e.target.value), onKeyDown: e => { if (e.key === 'Escape') { e.preventDefault(); closeSearch(); } }, placeholder: '搜索标题或项目', 'aria-label': '搜索标题或项目' }), h('button', { type: 'button', onClick: closeSearch, 'aria-label': '关闭搜索' }, '×')),
@@ -807,64 +807,5 @@ function makeGearLauncher(ctx) {
         h('button', { type: 'button', className: 'dsc-account-row', role: 'menuitem', onClick: showSettings, title: '在账号子页面中管理' }, profile?.avatarUrl && !avatarFailed ? h('img', { src: profile.avatarUrl, alt: '', onError: () => setAvatarFailed(true) }) : h('span', { className: 'dsc-account-avatar' }, h(Icon, { name: 'chat' })), h('span', null, h('strong', null, profile?.name || profile?.contact || '账号'), h('small', null, profile ? '账号与设置' : failed ? '打开账号设置' : '正在读取账号…'))),
         h('div', { className: 'dsc-menu-separator', role: 'separator' }),
         h(Option, { title: '设置', icon: 'settings', onClick: showSettings }))), document.body);
-  };
-}
-
-function CloudMark() {
-  return h('svg', { viewBox: '0 0 64 64', width: 48, height: 48, fill: 'none', stroke: 'currentColor', strokeWidth: 3.1, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true }, h('path', { d: 'M21 9c5-6 13-6 18-1 9-1 17 6 17 14 8 6 9 17 2 24-1 10-10 17-20 14-8 6-19 3-23-5C4 54-1 44 4 35c-4-8 1-18 9-20 1-3 4-5 8-6Z' }), h('path', { d: 'm20 24 6 9-6 9m16 1h11' }));
-}
-// 公开 region/slot 锚点用于测量；不查私有 class，不搬移原编辑器或其它节点。
-function useHeroGeometry(ref) {
-  const [geometry, setGeometry] = useState(null);
-  useLayoutEffect(() => {
-    const region = ref.current?.closest('[data-conversation-content]');
-    const composer = region?.querySelector('[data-slot="conversation.composer.bar"]');
-    if (!region || !composer) return;
-    const measure = () => {
-      const area = region.getBoundingClientRect();
-      const card = (composer.querySelector('[data-composer-card]') || composer).getBoundingClientRect();
-      const fallback = composer.closest('[data-chain-overlay-fallback]');
-      const visible = region.getAttribute('data-content-phase') === 'hero' && area.width > 0 && card.width > 0 && (!fallback || fallback.style.display !== 'none');
-      setGeometry(previous => {
-        const next = visible ? { left: card.left, top: card.top, width: card.width, centerX: area.left + area.width / 2, centerY: area.top + area.height * .45 } : null;
-        return JSON.stringify(previous) === JSON.stringify(next) ? previous : next;
-      });
-    };
-    measure();
-    const resize = new ResizeObserver(measure); resize.observe(region); resize.observe(composer);
-    const mutation = new MutationObserver(measure); mutation.observe(region, { subtree: true, attributes: true, attributeFilter: ['data-content-phase', 'style'] });
-    window.addEventListener('resize', measure); window.addEventListener('scroll', measure, true);
-    return () => { resize.disconnect(); mutation.disconnect(); window.removeEventListener('resize', measure); window.removeEventListener('scroll', measure, true); };
-  }, [ref]);
-  return geometry;
-}
-function EmptyHero() {
-  const ref = useRef(null);
-  const geometry = useHeroGeometry(ref);
-  return h(React.Fragment, null, h('span', { ref, 'aria-hidden': true }), geometry && createPortal(h('div', { className: 'dsc-ui dsc-empty-hero', style: { left: geometry.centerX, top: geometry.centerY } }, h(CloudMark), h('h1', null, '我们要构建什么？')), document.body));
-}
-function makeHeroWorkspace(ctx) {
-  return function HeroWorkspace({ open, anchorRef, selectedId, onPick, onClose }) {
-    const workspaces = useSource(ctx.workspaces.list);
-    const ref = useRef(null);
-    // 宿主提供真实 WorkspaceChip 及所在行；只标记样式，不复制触发器或搬移节点。
-    // 行继续在 composerStack 中自然占位，避免 body 浮层靠坐标/层级遮盖输入区。
-    useLayoutEffect(() => {
-      const button = anchorRef?.current;
-      const row = button?.parentElement;
-      if (!row || !row.contains(ref.current)) return;
-      const marks = [[row, 'data-dsc-hero-workspace-row'], [button, 'data-dsc-hero-workspace-trigger']];
-      const previous = marks.map(([node, name]) => node.getAttribute(name));
-      marks.forEach(([node, name]) => node.setAttribute(name, ''));
-      return () => marks.forEach(([node, name], i) => {
-        if (previous[i] === null) node.removeAttribute(name);
-        else node.setAttribute(name, previous[i]);
-      });
-    }, [anchorRef]);
-    const menu = open && h(Popover, { anchor: anchorRef, label: '选择项目', onClose, width: 280, placement: 'top-start' },
-      h('div', { className: 'dsc-menu-heading' }, '选择项目'),
-      workspaces.items.map(row => h(Option, { key: row.workspaceId, title: row.title, detail: row.path, icon: 'folder', selected: row.workspaceId === selectedId, onClick: () => onPick(row.workspaceId) })),
-      !workspaces.items.length && h('div', { className: 'dsc-empty' }, '先在左侧添加工作区'));
-    return h(React.Fragment, null, h('span', { ref, 'aria-hidden': true }), menu);
   };
 }

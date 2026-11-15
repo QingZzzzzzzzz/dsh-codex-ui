@@ -70,25 +70,6 @@
   margin: -8px -8px 6px;
   padding: 0 6px 0 10px;
 }
-.brand { display: flex; align-items: center; gap: 7px; }
-.brand__mark { display: block; height: 19px; width: auto; }
-.brand__wordmark {
-  font-size: 17px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--cx-sidebar-text);
-  line-height: 1;
-}
-.brand__badge {
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  line-height: 1;
-  padding: 3px 5px 2px;
-  border-radius: 3px;
-  background: var(--cx-text);
-  color: var(--cx-window);
-}
 .sidebar__header-actions { display: flex; align-items: center; gap: 2px; }
 .new-chat {
   display: flex;

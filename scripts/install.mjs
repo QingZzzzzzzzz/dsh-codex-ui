@@ -214,13 +214,12 @@ for (const name of new Set([manifest.name, legacyName])) {
 await access(resolve(source, 'lib/client.js'));
 await access(resolve(source, 'lib/host.js'));
 await access(resolve(source, 'lib/skills-host.js'));
-await access(resolve(source, 'lib/community-environment.js'));
 await access(resolve(source, 'lib/navigation.js'));
 await mkdir(backup, { recursive: true });
 for (const entry of originals) await writeFile(resolve(backup, entry.path.split(/[\\/]/).pop()), entry.bytes);
 await mkdir(resolve(target, 'lib'), { recursive: true });
 await mkdir(resolve(target, 'licenses'), { recursive: true });
-for (const file of ['package.json', 'cordis.patch.yml', 'skin.json', 'README.md', 'LICENSE', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md', 'licenses/DeepSeek-Harness-LICENSE', 'lib/client.js', 'lib/host.js', 'lib/skills-host.js', 'lib/community-environment.js', 'lib/navigation.js', 'scripts/rollback.mjs', 'locale/navigation/en.json', 'locale/navigation/zh.json']) {
+for (const file of ['package.json', 'cordis.patch.yml', 'skin.json', 'README.md', 'LICENSE', 'CHANGELOG.md', 'THIRD_PARTY_NOTICES.md', 'licenses/DeepSeek-Harness-LICENSE', 'lib/client.js', 'lib/host.js', 'lib/skills-host.js', 'lib/navigation.js', 'scripts/rollback.mjs', 'locale/navigation/en.json', 'locale/navigation/zh.json']) {
   await mkdir(dirname(resolve(target, file)), { recursive: true });
   await copyFile(resolve(source, file), resolve(target, file));
 }

@@ -30,13 +30,6 @@ const paths = {
 function Icon({ name, size = 16, ...props }) {
   return h('svg', { viewBox: '0 0 16 16', width: size, height: size, fill: 'none', stroke: 'currentColor', strokeWidth: 1.4, strokeLinecap: 'round', strokeLinejoin: 'round', 'aria-hidden': true, ...props }, h('path', { d: paths[name] || paths.chat }));
 }
-function PluginSupportSection({ subject }) {
-  if (subject?.kind !== 'bundle' || subject.pkg?.name !== PLUGIN_PACKAGE) return null;
-  return h('aside', { className: 'dsc-plugin-support', 'aria-label': '支持插件开发' },
-    h('p', null, '如果您认为插件使用体验不错，可以到github点一颗star支持我'),
-    h('a', { href: 'https://github.com/QingZzzzzzzzz/dsh-codex-ui', target: '_blank', rel: 'noopener noreferrer' },
-      'GitHub · QingZzzzzzzzz/dsh-codex-ui', h(Icon, { name: 'arrowUpRight', size: 14 })));
-}
 // 以页面时间轴零点对齐，错开开始、等待恢复和重新挂载的运行圈保持同一转角。
 function syncSessionSpinner(svg) {
   if (!svg) return;
@@ -48,31 +41,6 @@ function useSource(source) {
   const subscribe = useCallback(fn => source.subscribe(fn), [source]);
   const snapshot = useCallback(() => source.getSnapshot(), [source]);
   return useSyncExternalStore(subscribe, snapshot, snapshot);
-}
-// 社区版提醒：宿主公开 Toast 固定顶部居中；用户要求右下角，这里沿用 shell.overlay 自绘轻量提醒。
-const COMMUNITY_NOTICE_TEXT = '检测到当前为社区版 DSH Desktop，不是 DeepSeek 官方版。本插件针对官方 DeepSeek Harness，效果可能一般。';
-const COMMUNITY_NOTICE_HOLD_MS = 6000;
-function createCommunityNotice() {
-  let snapshot = null;
-  const listeners = new Set();
-  const publish = next => { snapshot = next; for (const listener of listeners) listener(); };
-  return {
-    getSnapshot: () => snapshot,
-    subscribe(listener) { listeners.add(listener); return () => listeners.delete(listener); },
-    show(text) { publish({ text }); },
-    clear() { if (snapshot !== null) publish(null); }
-  };
-}
-function CommunityNotice({ notice }) {
-  const current = useSource(notice);
-  const dismiss = useCallback(() => notice.clear(), [notice]);
-  useEffect(() => {
-    if (!current) return undefined;
-    const timer = setTimeout(dismiss, COMMUNITY_NOTICE_HOLD_MS);
-    return () => clearTimeout(timer);
-  }, [current, dismiss]);
-  if (!current) return null;
-  return createPortal(h('div', { className: 'dsc-ui dsc-community-notice', role: 'status', 'aria-live': 'polite' }, h('span', { className: 'dsc-community-notice-text' }, current.text)), document.body);
 }
 // 归档成功提示：顶部居中「已归档」+ 真实撤销/关闭；停留 6 秒后用 1 秒原路淡出。
 const ARCHIVE_NOTICE_HOLD_MS = 6000;
@@ -761,19 +729,6 @@ function mountCodexTheme(ctx, darkTokens, lightTokens) {
 function apply(ctx) {
   console.warn('[codex-style] apply 开始 v' + PLUGIN_VERSION);
   ctx.inject(['remote', 'remote.pluginInventory'], scope => scope.effect(() => watchCodexPresentation(scope), 'codex-style: presentation component states'));
-  // 社区版提醒：每次主客户端激活最多一次；官方环境、读取失败、提前卸载均不显示。
-  const communityNotice = createCommunityNotice();
-  let communityNoticeShown = false;
-  ctx.slots.inject('shell.overlay', () => ctx.slots.register({ name: 'shell.overlay', id: 'codex-style:community-notice' }, () => h(CommunityNotice, { notice: communityNotice })));
-  ctx.inject(['remote', 'remote.codexStyleEnvironment'], scope => scope.effect(() => {
-    let active = true;
-    Promise.resolve(scope.remote.codexStyleEnvironment.status()).then(result => {
-      if (!active || communityNoticeShown || result?.community !== true) return;
-      communityNoticeShown = true;
-      communityNotice.show(COMMUNITY_NOTICE_TEXT);
-    }).catch(error => { if (active) console.warn('codex-style: 无法读取运行环境', error); });
-    return () => { active = false; communityNotice.clear(); };
-  }, 'codex-style: community notice'));
   const tokenValues = {
     '--dsw-alias-bg-base': '#111111', '--dsw-alias-bg-layer-1': '#212121', '--dsw-alias-bg-layer-2': '#282828', '--dsw-alias-bg-layer-3': '#2d2d2d', '--dsw-alias-bg-overlay': '#282828',
     '--dsw-alias-bg-module-platform': '#0f0f0f', '--dsw-alias-label-primary': '#fcfcfc', '--dsw-alias-label-secondary': 'rgba(255,255,255,.7)', '--dsw-alias-label-tertiary': 'rgba(255,255,255,.5)',
@@ -822,14 +777,11 @@ function apply(ctx) {
     return scope.slots.register({ name, priority: Math.min(0, ...priorities) - 1, ...(inject ? { inject } : {}) }, component);
   });
   const components = {
-    'sidebar.brand.mark': () => h('img', { className: 'dsc-brand-mark', src: BRAND_MARK, alt: '' }),
-    'sidebar.brand.name': () => h('span', { className: 'dsc-ui dsc-brand' }, h('strong', null, 'deepseek'), h('small', null, 'HARNESS')),
     'settings.trigger': () => h('span', { className: 'dsc-ui dsc-settings-trigger' }, h(Icon, { name: 'settings', size: 18 }), '设置')
   };
   for (const [name, component] of Object.entries(components)) register(ctx, name, component);
   // 自研插件更新已退役：不再注册详情页更新按钮、更新提醒、Host 更新服务或定时网络查询。
   // 插件版本更新统一由 DSH 原生插件页/市场负责；本插件只保留 DSH 本体更新入口（见下方 desktopUpdates）。
-  ctx.slots.inject('plugins.detail.section', () => ctx.slots.register({ name: 'plugins.detail.section', id: 'codex-style:support' }, PluginSupportSection));
   // 等各区域自己的服务就绪；权限 RPC 的命名空间不能由 remote 根服务存在来推断。
   ctx.inject(['sessions', 'uiSession', 'workspaces', 'uiWorkspace', 'layout', 'shortcuts', 'remote', 'locale', 'pluginNavigation'], scope => {
     const sidebar = createSidebarPresentation();
@@ -851,10 +803,6 @@ function apply(ctx) {
   // 原生设置行指示器随被隐藏的宿主侧栏不可见；侧栏展开键上的蓝点由公开单槽位让给蓝圆入口。
   register(ctx, 'sidebar.toggle.badge', () => null);
   ctx.slots.inject('shell.overlay', () => ctx.slots.register({ name: 'shell.overlay', id: 'codex-style:desktop-update' }, () => createPortal(h('div', { className: 'dsc-ui dsc-desktop-update-launcher' }, h(DesktopUpdateRailButton, { source: desktopUpdates })), document.body)));
-  ctx.inject(['workspaces'], scope => {
-    register(scope, 'conversation.hero.brand.mark', EmptyHero);
-    register(scope, 'conversation.hero.workspace', makeHeroWorkspace(scope));
-  });
 }
 exports.name = 'dsh-codex-ui';
 exports.inject = ['slots', 'theme'];
