@@ -543,8 +543,7 @@ function makeWorkspaceTree(ctx, completionStore, archiveNotice) {
           projects.get(workspace.workspaceId).push(session);
         }
       }
-      // 最近是跨项目的时间视图，与项目/置顶共享同一会话，不按归属排除。
-      return { projects, pins, recent: visible };
+      return { projects, pins };
     }, [visible, pinned, memberships]);
     // 归属只读宿主公开目录：首次发现当前会话所属项目时固化为展开，避免切换会话后按 currentId 实时派生把它误折叠。
     // 已有记录（含用户显式收起）一律保留；空白会话或目录异步到达时，等 currentId / memberships 更新再补记。
@@ -684,7 +683,7 @@ function makeWorkspaceTree(ctx, completionStore, archiveNotice) {
                   children.length > PROJECT_SESSION_LIMIT && (more || hidden > 0) && h('button', { type: 'button', className: 'dsc-project-more', 'aria-expanded': more, onClick: toggleMore }, more ? '收起' : `显示更多（剩余 ${hidden}）`))
                 : h('small', { className: 'dsc-empty' }, '暂无对话'))));
           }))),
-          h('div', { className: 'dsc-section-title' }, '最近'), groups.recent.map(s => row(s))),
+          
         !visible.length && catalog.phase === 'ready' && h('div', { className: 'dsc-empty' }, query ? '没有匹配的对话' : '选择项目，开始新对话'),
         catalog.phase !== 'ready' && h('div', { className: 'dsc-empty', role: 'status' }, '正在加载会话…')),
       h('label', { className: 'dsc-archive-toggle' }, h('input', { type: 'checkbox', checked: showArchived, onChange: e => setShowArchived(e.target.checked) }), '显示已归档对话'),
