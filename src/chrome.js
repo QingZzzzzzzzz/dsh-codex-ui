@@ -313,7 +313,6 @@ function makeNavigationRail(ctx, sidebar) {
         pluginRows.length > 0 && item('plugins', '自定义', 'plugins', () => pick(pluginRows.some(row => row.id === 'plugins') ? 'plugins' : SKILLS_PANEL_ID), category === 'skills'),
         hasMore && item('more', '更多', 'more', openMore),
         h('div', { ref: extensions, className: 'dsc-extension-navigation-anchor', 'aria-hidden': true }),
-        h('button', { type: 'button', className: 'dsc-rail__item', 'aria-label': '账号', title: collapsed ? undefined : '账号', 'data-tip': '账号', onClick: () => { const gear = typeof document !== 'undefined' && document.querySelector('.dsc-gear-button'); if (gear) gear.click(); } }, h(IconUserOutlineRegular, { size: 18 })),
         h('span', { className: 'dsc-rail-hitblock', 'aria-hidden': true })),
       error && h('div', { className: 'dsc-ui dsc-navigation-error' }, h(ErrorLine, { text: error })),
       h(SidebarPinContextMenu, { sidebar })), document.body);
@@ -812,7 +811,7 @@ function makeGearLauncher(ctx) {
     }, [open]);
     const showSettings = () => { setOpen(false); openSettings(); };
     return createPortal(h('div', { className: 'dsc-ui dsc-gear-launcher' },
-      h('button', { ref: anchor, type: 'button', className: 'dsc-gear-button', 'aria-label': '设置', 'aria-haspopup': 'menu', 'aria-expanded': open, onClick: () => setOpen(!open) }, h(PrototypeIcon, { name: 'settings' })),
+      h('button', { ref: anchor, type: 'button', className: 'dsc-gear-button', 'aria-label': '账号与设置', 'aria-haspopup': 'menu', 'aria-expanded': open, onClick: () => setOpen(!open) }, h(IconUserOutlineRegular, { size: 18 })),
       open && h(Popover, { anchor, onClose: () => setOpen(false), label: '设置与账号', width: 228, className: 'dsc-app-menu', panelRef: menuRef, extraRoots: footerRoot ? [footerRoot] : [] },
         h('button', { type: 'button', className: 'dsc-account-row', role: 'menuitem', onClick: showSettings, title: '在账号子页面中管理' }, profile?.avatarUrl && !avatarFailed ? h('img', { src: profile.avatarUrl, alt: '', onError: () => setAvatarFailed(true) }) : h('span', { className: 'dsc-account-avatar' }, h(Icon, { name: 'chat' })), h('span', null, h('strong', null, profile?.name || profile?.contact || '账号'), h('small', null, profile ? '账号与设置' : failed ? '打开账号设置' : '正在读取账号…'))),
         h('div', { className: 'dsc-menu-separator', role: 'separator' }),
