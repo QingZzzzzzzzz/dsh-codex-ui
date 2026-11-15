@@ -76,7 +76,7 @@ body[data-dsh-codex-chrome] [data-dsc-frame] > [data-side="sidebar"]:is(:hover,[
 .dsc-sidebar-shell[data-mode=floating] > .dsc-sidebar { --cx-sidebar: #2c2c2c; border: 1px solid var(--cx-border-l1); border-radius: 12px; box-shadow: 0 0 0 3px #18181880, 0 8px 28px #0005; }
 .dsc-sidebar-shell[data-mode=floating][data-open=true] > .dsc-sidebar { animation: dsc-sidebar-content-in 150ms var(--cx-ease-out) both; }
 @keyframes dsc-sidebar-content-in { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: translateX(0); } }
-.dsc-independent-rail { visibility: visible; position: fixed; top: var(--dsh-frame-chrome-top, 0px); bottom: 0; left: 0; width: var(--cx-rail-w); z-index: 25; min-height: 0; padding-bottom: 56px; -webkit-app-region: no-drag; }
+.dsc-independent-rail { visibility: visible; position: fixed; top: var(--dsh-frame-chrome-top, 0px); bottom: 0; left: 0; width: var(--cx-rail-w); z-index: 25; min-height: 0; box-sizing: border-box; padding: 8px 8px 56px; -webkit-app-region: no-drag; }
 /* 外框左缘由常驻 frame 的单条描边统一绘制；原生 1px 边框保留宽度但不再着色，避免出现第二条线。 */
 body[data-dsh-codex-chrome] .dsc-independent-rail { border-right-color: transparent; background-clip: padding-box; }
 .dsc-extension-navigation-anchor { flex: 1; align-self: stretch; min-height: 0; }
@@ -122,9 +122,14 @@ body[data-dsh-codex-chrome] [data-dsc-extension-nav] [data-dsc-extension-glyph] 
 .dsc-projects-toggle[aria-expanded=true] svg { transform: rotate(0); }
 .dsc-sidebar .dsc-tree-scroll { padding: 0; scrollbar-color: #ffffff26 transparent; scrollbar-width: thin; }
 .dsc-section-page-title { font-weight: 600; }
-/* 侧栏品牌行：直接使用宿主 FishLogo + BrandWordmark，颜色跟随宿主 label token。 */
-.dsc-brand-native { display: flex; align-items: center; gap: 5px; height: 24px; min-width: 0; color: var(--dsw-alias-label-primary); }
-.dsc-brand-native svg { flex: none; display: block; }
+/* 品牌头部不能再向上越过侧栏裁切边界：Windows 标题栏/圆角裁剪同时存在时，
+   原先 -8px 的 margin 会截掉 FishLogo 与 BrandWordmark 的笔画。 */
+.dsc-sidebar .dsc-sidebar__header { min-height: 48px; height: auto; margin: 0 -8px 4px; padding: 8px 6px 6px 10px; overflow: visible; }
+/* 直接使用宿主 FishLogo + BrandWordmark。两个 wrapper 防止 flex 算法压缩 SVG 的可视区域，
+   因而鲸鱼、deepseek 文字和 HARNESS 徽章始终作为完整的原生组件呈现。 */
+.dsc-brand-native { display: flex; align-items: center; gap: 5px; min-width: 0; height: 24px; overflow: visible; color: var(--dsw-alias-label-primary); white-space: nowrap; }
+.dsc-brand-native__mark, .dsc-brand-native__wordmark { display: inline-flex; align-items: center; flex: 0 0 auto; min-width: max-content; height: 24px; overflow: visible; line-height: 0; }
+.dsc-brand-native svg { display: block; flex: none; max-width: none; overflow: visible; }
 /* 项目行文件夹图标沿用宿主语义：常态 label-tertiary，当前工作区用 business-primary。 */
 .dsc-project-main > svg { color: var(--dsw-alias-label-tertiary); }
 .dsc-project.is-current .dsc-project-main > svg { color: var(--dsw-alias-state-business-primary); }

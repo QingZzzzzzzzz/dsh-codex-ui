@@ -74,6 +74,19 @@ test('navigation mounts only while its component stays enabled in the inventory'
   assert.equal(f.events.size, 0);
 });
 
+test('built sidebar keeps the native brand inside a safe header and uses host icon primitives', async () => {
+  const bundle = await readFile(new URL('../lib/client.js', import.meta.url), 'utf8');
+  // 品牌的两个 SVG 各自有不可压缩的容器；不要把静态鲸鱼/徽章 SVG 复制进插件。
+  assert.equal(bundle.includes('dsc-brand-native__mark'), true);
+  assert.equal(bundle.includes('dsc-brand-native__wordmark'), true);
+  assert.equal(bundle.includes('FishLogo'), true);
+  assert.equal(bundle.includes('BrandWordmark'), true);
+  // 头部只使用安全内边距，不能重新引入把商标推入圆角裁切区的上负边距。
+  assert.equal(bundle.includes('.dsc-sidebar .dsc-sidebar__header { min-height: 48px; height: auto; margin: 0 -8px 4px; padding: 8px 6px 6px 10px; overflow: visible; }'), true);
+  // 左轨道继续由宿主 primitives 的图标组件渲染，避免捆绑来源不明的 Codex SVG。
+  for (const icon of ['IconLayersOutlineRegular', 'IconAlarmClockOutlineRegular', 'IconCordisPluginOutlineRegular', 'IconAppsAddOutlineRegular']) assert.equal(bundle.includes(icon), true, icon);
+});
+
 test('inventory errors and stale replies leave navigation disabled', async t => {
   const f = await presentationFixture(t);
   await f.set(true);
