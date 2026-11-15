@@ -1,5 +1,5 @@
 {
-  "name": "@qinova-ai/dsh-codex-style",
+  "name": "@qinova-ai/dsh-codex-ui",
   "version": "0.2.7",
   "description": "随 DSH 深浅色配置切换的 Codex 风格界面插件",
   "type": "module",

@@ -111,7 +111,7 @@ body[data-dsh-codex-chrome] [data-dsc-extension-nav] [data-dsc-extension-glyph] 
 .dsc-sidebar .dsc-sidebar__header { flex: none; }
 .dsc-sidebar .dsc-sidebar__header-actions { margin-left: auto; }
 /* Codex：新聊天默认无底色、不显示快捷键，仅悬停时出现灰色背景。 */
-.dsc-sidebar .dsc-new-chat { flex: none; justify-content: flex-start; width: 100%; font-size: 13px; font-weight: var(--cx-weight-medium); background: transparent; color: var(--cx-sidebar-text); margin-bottom: 8px; }
+.dsc-sidebar .dsc-new-chat { flex: none; justify-content: flex-start; width: 100%; font-size: 14px; font-weight: var(--cx-weight-medium); background: transparent; color: var(--cx-sidebar-text); margin-bottom: 8px; }
 .dsc-sidebar .dsc-new-chat:hover { background: rgba(255,255,255,.08); }
 .dsc-sidebar .dsc-workspaces { flex: 1; min-height: 0; height: auto; }
 /* 同时限定两个自有类，避免后面的通用 .dsc-search 把它重新变成伸展项。 */
@@ -127,6 +127,12 @@ body[data-dsh-codex-chrome] [data-dsc-extension-nav] [data-dsc-extension-glyph] 
 .dsc-projects-toggle[aria-expanded=true] svg { transform: rotate(0); }
 .dsc-sidebar .dsc-tree-scroll { padding: 0; scrollbar-color: #ffffff26 transparent; scrollbar-width: thin; }
 .dsc-section-page-title { font-size: 17px; font-weight: 600; }
+/* 侧栏品牌行：直接使用宿主 FishLogo + BrandWordmark，颜色跟随宿主 label token。 */
+.dsc-brand-native { display: flex; align-items: center; gap: 8px; min-width: 0; color: var(--dsw-alias-label-primary); }
+.dsc-brand-native svg { flex: none; display: block; }
+/* 项目行文件夹图标沿用宿主语义：常态 label-tertiary，当前工作区用 business-primary。 */
+.dsc-project-main > svg { color: var(--dsw-alias-label-tertiary); }
+.dsc-project.is-current .dsc-project-main > svg { color: var(--dsw-alias-state-business-primary); }
 .dsc-secondary-nav { display: flex; flex-direction: column; gap: 4px; min-height: 0; overflow: auto; padding-top: 6px; }
 .dsc-secondary-nav .dsc-secondary-item { display: flex; align-items: center; gap: 8px; min-height: 32px; width: 100%; padding: 0 8px; border-radius: var(--cx-radius-md); text-align: left; color: var(--cx-text-2); font-size: 13px; }
 .dsc-secondary-nav .dsc-secondary-item.is-active, .dsc-secondary-nav .dsc-secondary-item:hover { background: var(--cx-active); color: var(--cx-text); }

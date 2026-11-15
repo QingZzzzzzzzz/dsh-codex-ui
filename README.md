@@ -18,7 +18,7 @@
 
 ## 安装
 
-在 DSH「自定义 → 插件 → 添加插件」中输入 `@qinova-ai/dsh-codex-style`；也可从 [发行页面](https://github.com/QingZzzzzzzzz/dsh-codex-ui/releases/tag/v0.2.7) 下载 Windows ZIP，退出 DSH 后运行 `install.cmd`（需要 Node.js 20+），完成后重新启动 DSH。
+在 DSH「自定义 → 插件 → 添加插件」中输入 `@qinova-ai/dsh-codex-ui`；也可从 [发行页面](https://github.com/QingZzzzzzzzz/dsh-codex-ui/releases/tag/v0.2.7) 下载 Windows ZIP，退出 DSH 后运行 `install.cmd`（需要 Node.js 20+），完成后重新启动 DSH。
 
 兼容声明使用 `engines.dsh: "*"`，手动安装器也允许所有有效 DSH 版本号，包括预发布版。推荐版本是测试基线，不是强制门禁；本版不新增外观设置页。手动安装仍需要 Node.js 20+。
 

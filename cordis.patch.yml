@@ -1,6 +1,6 @@
 - insert:
     - id: dsh-codex-ui
-      name: '@qinova-ai/dsh-codex-style'
+      name: '@qinova-ai/dsh-codex-ui'
     - id: dsh-codex-ui-navigation
-      name: '@qinova-ai/dsh-codex-style/navigation'
+      name: '@qinova-ai/dsh-codex-ui/navigation'
       disabled: false

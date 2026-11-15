@@ -8,7 +8,8 @@ const {
   IconPinOutlineRegular, IconPinFillRegular, IconArchiveOutlineRegular, IconInfoOutlineRegular,
   IconRightUpOutlineRegular, IconCloseOutlineRegular, IconSettingsOutlineRegular, IconSkillOutlineRegular,
   IconLayersOutlineRegular, IconAlarmClockOutlineRegular, IconCordisPluginOutlineRegular,
-  IconPanelLeftOutlineRegular, IconDownloadOutlineRegular, IconEllipsisOutlineRegular, IconLoadingOutlineRegular
+  IconPanelLeftOutlineRegular, IconDownloadOutlineRegular, IconEllipsisOutlineRegular, IconLoadingOutlineRegular,
+  FishLogo, BrandWordmark
 } = require('@deepseek-ai/dsh-client-ui-primitives');
 const { createSnapshotStore } = require('@deepseek-ai/dsh-client-store');
 const h = React.createElement;
@@ -674,7 +675,7 @@ function makeWorkspaceTree(ctx, completionStore, archiveNotice) {
             const hidden = children.length - shown.length;
             const more = moreExpanded[w.workspaceId] === true;
             const toggleMore = () => { hideHover(); setMenu(null); setProjectMenu(null); setMoreExpanded(previous => ({ ...previous, [w.workspaceId]: !(previous[w.workspaceId] === true) })); };
-            return h('section', { key: w.workspaceId }, h('div', { className: 'dsc-project', onPointerEnter: e => enterHover(e.currentTarget, { kind: 'project', id: w.workspaceId, workspace: w, title: w.title || '未命名项目', count: children.length, path: w.path, pinned: w.pinned === true }), onPointerLeave: closeHover },
+            return h('section', { key: w.workspaceId }, h('div', { className: 'dsc-project' + (currentId !== null && Array.isArray(w.sessionIds) && w.sessionIds.includes(currentId) ? ' is-current' : ''), onPointerEnter: e => enterHover(e.currentTarget, { kind: 'project', id: w.workspaceId, workspace: w, title: w.title || '未命名项目', count: children.length, path: w.path, pinned: w.pinned === true }), onPointerLeave: closeHover },
               h('button', { type: 'button', className: 'dsc-project-main', onClick: () => { hideHover(); setMenu(null); setProjectMenu(null); setExpanded(previous => ({ ...previous, [w.workspaceId]: !(previous[w.workspaceId] ?? w.sessionIds.includes(currentId)) })); }, 'aria-expanded': open }, h(Icon, { name: open ? 'folderOpen' : 'folder' }), h('span', null, w.title || '未命名项目')),
               h('button', { type: 'button', className: 'dsc-row-action', title: '项目菜单', 'aria-label': '项目菜单', 'aria-haspopup': 'menu', 'aria-expanded': projectMenu?.workspaceId === w.workspaceId, onClick: e => { projectAnchor.current = e.currentTarget; setHover(null); setProjectMenu(projectMenu?.workspaceId === w.workspaceId ? null : w); } }, '⋯'),
               h('button', { type: 'button', className: 'dsc-row-action', title: '在此项目新建对话', 'aria-label': '在此项目新建对话', onClick: () => { ctx.uiWorkspace.startSession(w.workspaceId); onNavigate?.(); } }, h(Icon, { name: 'pencil', size: 14 }))),

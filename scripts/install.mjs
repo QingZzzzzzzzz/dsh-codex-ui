@@ -189,12 +189,14 @@ catch (error) { if (error.code !== 'ENOENT') throw error; }
 const config = JSON.parse(originals[0].bytes.toString());
 config.dependencies ??= {};
 if (!Array.isArray(config.dsh?.profile?.bundles)) throw new Error('未识别 desktop profile 的插件列表；未改 profile。');
-const legacyName = 'dsh-codex-style';
+// 历史包名：安装器管理的旧身份，升级时按顺序识别并迁移。
+const LEGACY_NAMES = ['dsh-codex-style', '@qinova-ai/dsh-codex-style', '@xinxing1708/dsh-codex-style'];
+const legacyName = LEGACY_NAMES[0];
 let previousTarget;
 let previousName;
 let previousLinkPath;
 // 仅迁移本安装器管理的旧包；npm 上的同名第三方包不能按版本号认领。
-for (const name of new Set([manifest.name, legacyName])) {
+for (const name of new Set([manifest.name, ...LEGACY_NAMES])) {
   const candidatePath = resolve(profile, 'node_modules', name);
   const previousDependency = config.dependencies?.[name];
   const previousLink = await lstat(candidatePath).catch(e => { if (e.code === 'ENOENT') return null; throw e; });
@@ -227,7 +229,7 @@ for (const file of ['package.json', 'cordis.patch.yml', 'skin.json', 'README.md'
 const localLink = 'link:' + relative(profile, target).replaceAll('\\', '/');
 if (previousName && previousName !== manifest.name) delete config.dependencies[previousName];
 config.dependencies[manifest.name] = localLink;
-const oldSkins = new Set(['dsh-claude-style', '@michengai/dsh-codex-ui']);
+const oldSkins = new Set(['dsh-claude-style', '@michengai/dsh-codex-ui', ...LEGACY_NAMES]);
 config.dsh.profile.bundles = config.dsh.profile.bundles.filter(name => !oldSkins.has(name) && name !== manifest.name && name !== previousName);
 config.dsh.profile.bundles.push(manifest.name);
 const eol = originals[1].bytes.includes(Buffer.from('\r\n')) ? '\r\n' : '\n';

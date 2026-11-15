@@ -49,7 +49,7 @@ async function presentationFixture(t) {
   t.after(() => ctx.fiber.dispose());
   const flush = () => new Promise(setImmediate);
   const set = async (navigation, phase = 'active') => {
-    inventory = [{ moduleName: '@qinova-ai/dsh-codex-style/navigation', enabled: navigation, fiberPhase: navigation ? phase : null }];
+    inventory = [{ moduleName: '@qinova-ai/dsh-codex-ui/navigation', enabled: navigation, fiberPhase: navigation ? phase : null }];
     await events.get('plugin-manager/changed')(); await flush();
     for (const fiber of fibers) await fiber.await();
   };
@@ -86,7 +86,7 @@ test('inventory errors and stale replies leave navigation disabled', async t => 
   const refresh = f.events.get('plugin-manager/changed');
   const old = refresh(), latest = refresh();
   replies[1]({ ok: true, value: { entries: [] } }); await latest;
-  replies[0]({ ok: true, value: { entries: [{ moduleName: '@qinova-ai/dsh-codex-style/navigation', enabled: true, fiberPhase: 'active' }] } }); await old; await f.flush();
+  replies[0]({ ok: true, value: { entries: [{ moduleName: '@qinova-ai/dsh-codex-ui/navigation', enabled: true, fiberPhase: 'active' }] } }); await old; await f.flush();
   assert.equal(f.state().navigation, false);
 });
 

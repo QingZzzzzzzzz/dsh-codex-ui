@@ -78,7 +78,7 @@
   --cx-diff-del-mark: #ff6764;
 
   /* ---- 字体 ---- */
-  --cx-font-sans: -apple-system, system-ui, "Segoe UI", sans-serif;
+  --cx-font-sans: var(--dsw-font-family);
   --cx-font-mono: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 
   /* ---- 字号 / 行高 ---- */
