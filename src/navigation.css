@@ -1,17 +1,19 @@
 /* 页面前进后退：只在导航组件启用时生效；关闭后侧栏按钮回到原位置与尺寸。 */
 body[data-dsc-codex-navigation] {
-  --dsc-navigation-native-shift: 68px;
+  --dsc-navigation-native-shift: 0px;
   /* 宿主 Windows 捕获菜单由 preload 按 left: var(--dsh-windows-menu-start, 48px) 定位。
      收起态宿主会把它抬到 84px 给原生新建会话键让位，但本插件收起态用自有 rail，那个键不可见。
      两态统一按“展开默认 48px + 位移”定位，菜单始终紧接折叠键右缘 8px。 */
-  --dsh-windows-menu-start: calc(48px + var(--dsc-navigation-native-shift));
+  --dsh-windows-menu-start: 48px;
 }
 
 /* 后退 / 前进：两个 32px 按钮，left 8，gap 2；中心约 24 / 58。 */
+/* 前进/后退放到 52px 窄栏底部竖排，避开原生侧栏顶部图标。 */
 body[data-dsc-codex-navigation] .dsc-nav-controls {
   position: fixed;
-  top: 4px;
+  bottom: 96px;
   left: 8px;
+  flex-direction: column;
   z-index: 36;
   display: flex;
   align-items: center;
@@ -120,8 +122,9 @@ body[data-dsc-codex-navigation] [data-dsc-navigation-native-shift] {
 }
 
 /* 自绘侧栏按钮覆盖原生旧位置；原生切换键隐藏，避免两套按钮露出或重叠。 */
+/* 原生侧栏可见后，折叠键交还宿主，插件不再隐藏它。 */
 body[data-dsc-codex-navigation] [data-dsc-navigation-native-toggle] {
-  visibility: hidden !important;
+  visibility: visible;
 }
 
 @media (prefers-reduced-motion: reduce) {

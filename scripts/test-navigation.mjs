@@ -349,7 +349,7 @@ test('windows caption menu keeps one start position in both sidebar states', asy
   const { fixture: api } = await fixture();
   // 收起态宿主会把 --dsh-windows-menu-start 抬到 84px；插件固定回“展开默认 48 + 位移”，
   // 否则菜单会离开折叠键 44px，中间留下空缺。
-  assert.ok(api.navigationCss.includes('--dsh-windows-menu-start: calc(48px + var(--dsc-navigation-native-shift))'));
+  assert.ok(api.navigationCss.includes('--dsh-windows-menu-start: 48px'));
   assert.equal(api.navigationCss.includes('margin-left: var(--dsc-navigation-native-shift)'), false);
 });
 

@@ -9,7 +9,8 @@ html[data-windows-titlebar] body[data-dsh-codex-chrome] [data-dsc-frame] [data-s
 /* 正文字体颜色：第 134 轮按新版 Codex 默认主题取 #fcfcfc（原 #dfdfdf 偏暗）。仅覆盖对话内容区，不影响按钮、菜单等其它主文本。 */
 /* 正文列随输入卡宽度对齐，隐藏宿主两侧的宽度拖拽柄及其整条命中区域。 */
 /* 原 sidebar/settings 父级继续挂载以保留原生页面与子槽位所有权；只隐藏其旧外观。 */
-body[data-dsh-codex-chrome] [data-slot="sidebar"] { display: block !important; position: relative; width: 100%; height: 100%; visibility: hidden; }
+/* 项目/会话列表交还宿主原生渲染：原生侧栏可见，插件只在其左侧保留 52px 窄栏。 */
+body[data-dsh-codex-chrome] [data-slot="sidebar"] { visibility: visible; }
 /* 两侧等量保留原生滚动条空间，使空态与会话中的输入卡共用同一中线。 */
 
 .dsc-ui { color: var(--cx-text); box-sizing: border-box; }

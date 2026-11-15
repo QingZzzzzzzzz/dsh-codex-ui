@@ -737,7 +737,7 @@ function apply(ctx) {
     const archiveNotice = createArchiveNotice(sessionId => scope.uiWorkspace.unarchiveSession(sessionId));
     scope.effect(() => () => archiveNotice.dispose(), 'codex-style: archive notice');
     scope.slots.inject('shell.overlay', () => scope.slots.register({ name: 'shell.overlay', id: 'codex-style:archive-notice' }, () => h(ArchiveNotice, { notice: archiveNotice })));
-    register(scope, 'sidebar.workspaces', makeSidebarChrome(scope, sidebar, archiveNotice));
+    // 侧栏列表由宿主原生渲染，插件不再注册自绘侧栏。
     scope.slots.inject('shell.overlay', () => scope.slots.register({ name: 'shell.overlay', id: 'codex-style:shell' }, makeShellChrome(scope, sidebar)));
   });
   ctx.inject(['modules', 'locale', 'remote', 'remote.account'], scope => register(scope, 'settings.launcher', makeGearLauncher(scope)));

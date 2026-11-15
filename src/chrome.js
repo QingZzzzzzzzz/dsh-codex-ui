@@ -444,7 +444,6 @@ function makeSidebarChrome(ctx, sidebar, archiveNotice) {
 
 function makeShellChrome(ctx, sidebar) {
   const Navigation = makeNavigationRail(ctx, sidebar);
-  const Toggle = makeSidebarToggle(ctx);
   return function ShellChrome() {
     const marker = useRef(null);
     useLayoutEffect(() => {
@@ -477,7 +476,7 @@ function makeShellChrome(ctx, sidebar) {
         });
       };
     }, []);
-    return h(React.Fragment, null, h('span', { ref: marker, hidden: true }), h(Navigation), h(Toggle));
+    return h(React.Fragment, null, h('span', { ref: marker, hidden: true }), h(Navigation));
   };
 }
 
