@@ -261,7 +261,7 @@ body[data-dsh-codex-chrome] .dsc-independent-rail [data-dsc-app-footer-clear-ite
 .dsc-thread-time { position: absolute; right: 9px; font-size: 10px; color: var(--cx-sidebar-muted); transition: opacity 120ms ease; }
 .dsc-thread-completion { position: absolute; right: 9px; top: 50%; width: 8px; height: 8px; border-radius: 50%; background: #4c9bfe; transform: translateY(-50%); pointer-events: none; }
 .dsc-thread-running { position: absolute; right: 9px; top: 50%; display: grid; place-items: center; width: 12px; height: 12px; color: var(--cx-sidebar-muted); transform: translateY(-50%); pointer-events: none; }
-.dsc-running-spinner { animation: dsc-session-spin 1.9s linear infinite; }
+.dsc-running-spinner { display: inline-flex; line-height: 0; animation: dsc-session-spin 1.9s linear infinite; }
 .dsc-thread:hover .dsc-thread-time, .dsc-thread:has(:focus-visible) .dsc-thread-time { display: none; }
 .dsc-thread:hover .dsc-thread-completion, .dsc-thread:has(:focus-visible) .dsc-thread-completion { opacity: 0; }
 .dsc-thread:hover .dsc-thread-running, .dsc-thread:has(:focus-visible) .dsc-thread-running { opacity: 0; }

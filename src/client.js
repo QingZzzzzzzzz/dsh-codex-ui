@@ -8,7 +8,7 @@ const {
   IconPinOutlineRegular, IconPinFillRegular, IconArchiveOutlineRegular, IconInfoOutlineRegular,
   IconRightUpOutlineRegular, IconCloseOutlineRegular, IconSettingsOutlineRegular, IconSkillOutlineRegular,
   IconLayersOutlineRegular, IconAlarmClockOutlineRegular, IconCordisPluginOutlineRegular,
-  IconPanelLeftOutlineRegular, IconDownloadOutlineRegular, IconEllipsisOutlineRegular
+  IconPanelLeftOutlineRegular, IconDownloadOutlineRegular, IconEllipsisOutlineRegular, IconLoadingOutlineRegular
 } = require('@deepseek-ai/dsh-client-ui-primitives');
 const { createSnapshotStore } = require('@deepseek-ai/dsh-client-store');
 const h = React.createElement;
@@ -636,9 +636,8 @@ function makeWorkspaceTree(ctx, completionStore, archiveNotice) {
           h('span', { className: 'dsc-state', 'data-state': pending ? 'pending' : 'idle' }, pending && h(Icon, { name: 'chat', size: 14 })),
           h(ThreadTitle, { title: s.title || '未命名对话' }),
           running ? h('span', { className: 'dsc-thread-running', role: 'img', 'aria-label': '对话进行中', title: '对话进行中' },
-            h('svg', { className: 'dsc-running-spinner', ref: syncSessionSpinner, onAnimationStart: event => syncSessionSpinner(event.currentTarget), viewBox: '0 0 16 16', width: 12, height: 12, fill: 'none', 'aria-hidden': true },
-              h('circle', { cx: 8, cy: 8, r: 6.5, stroke: 'currentColor', strokeWidth: 1.6, opacity: .22 }),
-              h('circle', { cx: 8, cy: 8, r: 6.5, stroke: 'currentColor', strokeWidth: 1.6, strokeDasharray: '30.6 10.2', strokeLinecap: 'round' })))
+            h('span', { className: 'dsc-running-spinner', ref: syncSessionSpinner, onAnimationStart: event => syncSessionSpinner(event.currentTarget), 'aria-hidden': true },
+              h(IconLoadingOutlineRegular, { size: 12 })))
             : completed ? h('span', { className: 'dsc-thread-completion', role: 'img', 'aria-label': '对话已完成，未读', title: '对话已完成，未读' }) : h('small', { className: 'dsc-thread-time' }, activity)),
         h('div', { className: 'dsc-thread-actions' },
           h(ThreadAction, { label: pinned.has(s.sessionId) ? '取消置顶聊天' : '置顶聊天', className: 'dsc-pin-action', pressed: pinned.has(s.sessionId), active: actionsActive, onIntent: hideHover, onClick: () => togglePin(s) }, h(PinMark, { filled: pinned.has(s.sessionId) })),
